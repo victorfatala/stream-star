@@ -1,4 +1,4 @@
-# movies-page
+# USC Movies Page
 This is a Movies Page project for UNISAGRADO Computer Science course! 🎥
 
 In this responsive web development study we aimed to create a Netflix-like web page where users can:
