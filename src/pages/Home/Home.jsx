@@ -3,6 +3,7 @@ import "./Home.css";
 import Navbar from "../../components/Navbar/Navbar";
 import hero_banner from "../../assets/hero_banner.jpg";
 import hero_title from "../../assets/hero_title.png";
+import logo from "../../assets/logo.png";
 import play_icon from "../../assets/play_icon.png";
 import info_icon from "../../assets/info_icon.png";
 import TitleCards from "../../components/TitleCards/TitleCards";
@@ -13,13 +14,14 @@ const Home = () => {
     <div className="home">
       <Navbar />
       <div className="hero">
-        <img src={hero_banner} alt="" className="banner-img" />
+        <img src="login-background.jpeg" alt="" className="banner-img" />
         <div className="hero-caption">
-          <img src={hero_title} alt="" className="caption-img" />
+          <img src={logo} alt="" className="caption-img" />
           <p>
-            Um texto interessante sobre o filme em destaque. Nossa mas que filme
-            esplendido! Deveriamos todos assistir a esse filme maravilhoso.
-            Intrigante nao e? Juro que acho esse filme muito legal.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+            ornare, odio et commodo imperdiet, velit arcu laoreet eros, gravida
+            varius libero nibh in eros. Aenean gravida mi id risus ornare, ac
+            feugiat mauris lacinia.
           </p>
           <div className="hero-btns">
             <button className="btn">
@@ -35,10 +37,11 @@ const Home = () => {
         </div>
       </div>
       <div className="more-cards">
-        <TitleCards title={"Blockbuster Movies"} />
-        <TitleCards title={"Only on Netflix"} />
-        <TitleCards title={"Upcoming"} />
-        <TitleCards title={"Top Pics for You"} />
+        <TitleCards id="carousel-1" title={"Recomendados para você"} />
+        <TitleCards id="carousel-2" title={"Filmes"} />
+        <TitleCards id="carousel-3" title={"Populares"} />
+        <TitleCards id="carousel-4" title={"Meus Favoritos"} />
+        <TitleCards id="carousel-4" title={"Filmes já assistidos"} />
       </div>
       <Footer />
     </div>

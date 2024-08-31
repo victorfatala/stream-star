@@ -6,6 +6,10 @@ import Login from "./pages/Login/Login";
 const App = () => {
   return (
     <div>
+      <link
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet"
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

@@ -1,53 +1,61 @@
 import React, { useState } from "react";
 import "./Login.css";
 import logo from "../../assets/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [signState, setSignState] = useState("Sign In");
+  let navigate = useNavigate();
+
+  const [signState, setSignState] = useState("Entrar");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    navigate("/");
+  };
 
   return (
     <div className="login">
-      <img src={logo} className="login-logo" />
+      <img src={logo} className="login-logo" onClick={() => {}} />
       <div className="login-form">
         <h1>{signState}</h1>
-        <form>
-          {signState === "Sign Up" ? (
-            <input type="text" placeholder="Your name" />
+        <form onSubmit={(event) => handleSubmit(event)}>
+          {signState === "Cadastrar" ? (
+            <input type="text" placeholder="Seu nome" />
           ) : (
             <></>
           )}
           <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <button>{signState}</button>
+          <input type="password" placeholder="Senha" />
+          <button type="submit">{signState}</button>
           <div className="form-help">
             <div className="remember">
               <input type="checkbox" />
-              <label>Remember Me</label>
+              <label>Lembre-se de mim</label>
             </div>
-            <p>Need Help?</p>
+            <p>Precisa de ajuda?</p>
           </div>
         </form>
         <div className="form-switch">
-          {signState === "Sign Up" ? (
+          {signState === "Cadastrar" ? (
             <p>
-              Already have account?{" "}
+              Já possui uma conta?
               <span
                 onClick={() => {
-                  setSignState("Sign In");
+                  setSignState("Entrar");
                 }}
               >
-                Sign In Now
+                Entre agora
               </span>
             </p>
           ) : (
             <p>
-              New to Netflix?{" "}
+              Novo no StreamStar?{" "}
               <span
                 onClick={() => {
-                  setSignState("Sign Up");
+                  setSignState("Cadastrar");
                 }}
               >
-                Sign Up Now
+                Cadastre-se agora
               </span>
             </p>
           )}

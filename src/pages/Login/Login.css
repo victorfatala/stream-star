@@ -1,17 +1,27 @@
 .login {
   height: 100vh;
   background-image: linear-gradient(#0000007e, #0000007e),
-    url(/background_banner.jpg);
+    url(/login-background.jpeg);
+  background-repeat: no-repeat;
+  background-size: 100%;
   padding: 20px 8%;
 }
 .login-logo {
-  width: 150px;
+  width: 200px;
 }
 .login-form {
   width: 100%;
   max-width: 450px;
-  background: rgba(0, 0, 0, 0.75);
-  border-radius: 4px;
+  background: linear-gradient(
+    135deg,
+    rgba(7, 0, 13, 0.867),
+    rgba(20, 1, 37, 0.675)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 0;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   padding: 60px;
   margin: auto;
 }
@@ -42,13 +52,19 @@
   border: 0;
   outline: 0;
   padding: 16px;
-  background: #e50914;
+  background: #450386;
   color: white;
   border-radius: 4px;
   font-size: 16px;
   font-weight: 500;
   margin-top: 20px;
   cursor: pointer;
+  transition: 0.4s;
+}
+.login-form button:hover {
+  background: #c285ff;
+  box-shadow: 0 0 35px #c285ff;
+  color: black;
 }
 .form-help {
   display: flex;
@@ -75,4 +91,16 @@
   color: #fff;
   font-weight: 500;
   cursor: pointer;
+}
+.form-switch span:hover {
+  text-decoration: underline;
+}
+@media (max-width: 500px) {
+  .login {
+    padding: 15px 5%;
+  }
+  .login-form {
+    padding: 20px;
+    margin-top: 30px;
+  }
 }

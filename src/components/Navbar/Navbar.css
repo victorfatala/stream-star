@@ -1,17 +1,31 @@
 .navbar {
   width: 100%;
-  padding: 20px 6% 0px;
+  padding: 5px 3% 10px;
   display: flex;
   justify-content: space-between;
   position: fixed;
-  font-size: 14px;
-  color: #e5e5e5;
+  font-size: 16px;
   background-image: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0.7) 10%,
     transparent
   );
-  z-index: 1;
+
+  color: #e5e5e5;
+  z-index: 100;
+}
+.navbar.active {
+  background-image: none;
+  background: linear-gradient(
+    135deg,
+    rgba(7, 0, 13, 0.867),
+    rgba(20, 1, 37, 0.675)
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 0;
+  border-radius: 0px 0px 20px 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 .navbar-left {
   display: flex;
@@ -19,7 +33,7 @@
   gap: 50px;
 }
 .navbar-left img {
-  width: 90px;
+  width: 110px;
 }
 .navbar-left ul {
   display: flex;
@@ -28,6 +42,23 @@
 }
 .navbar-left ul li {
   cursor: pointer;
+}
+.navbar-left button {
+  border: 0;
+  outline: 0;
+  padding: 8px;
+  background: none;
+  color: white;
+  border-radius: 7px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.navbar-left button:hover {
+  background: #c285ff;
+  box-shadow: 0 0 35px #c285ff;
+  color: black;
 }
 .navbar-right {
   display: flex;
@@ -42,6 +73,23 @@
   border-radius: 4px;
   width: 35px;
 }
+.navbar-right button {
+  border: 0;
+  outline: 0;
+  padding: 8px 10px;
+  background: none;
+  color: white;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.navbar-right button:hover {
+  background: #c285ff;
+  box-shadow: 0 0 35px #c285ff;
+  color: black;
+}
 .navbar-profile {
   display: flex;
   align-items: center;
@@ -50,20 +98,60 @@
 }
 .navbar .dropdown {
   position: absolute;
-  top: 100%;
+  top: 70%;
   right: 0;
   width: max-content;
   background: #191919;
-  padding: 18px 22px;
+  padding: 10px 22px;
   border-radius: 2px;
   text-decoration: underline;
   z-index: 1;
   display: none;
 }
-.navbar .dropdown p {
-  font-size: 13px;
-  cursor: pointer;
-}
+
 .navbar-profile:hover .dropdown {
   display: block;
+}
+.navbar-profile span {
+  font-size: 35px;
+}
+.border-bottom {
+  height: 10px;
+  background: red;
+}
+@media (max-width: 1100px) {
+  .navbar {
+    background-image: none;
+    background: linear-gradient(
+      135deg,
+      rgba(7, 0, 13, 0.867),
+      rgba(20, 1, 37, 0.675)
+    );
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 0;
+    border-radius: 0px 0px 20px 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    padding: 20px 4%;
+  }
+  .navbar-left ul {
+    display: none;
+  }
+}
+@media (max-width: 500px) {
+  .navbar {
+    font-size: 15px;
+  }
+  .navbar img {
+    width: 100px;
+  }
+  .navbar span {
+    font-size: 25px;
+  }
+  .navbar-right {
+    gap: 10px;
+  }
+  .navbar-right .user {
+    display: none;
+  }
 }

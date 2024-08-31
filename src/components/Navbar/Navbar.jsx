@@ -1,34 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import logo from "../../assets/logo.png";
 import search_icon from "../../assets/search_icon.svg";
 import bell_icon from "../../assets/bell_icon.svg";
 import profile_img from "../../assets/profile_img.png";
 import caret_icon from "../../assets/caret_icon.svg";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const [navbar, setNavbar] = useState(false);
+
+  const changeBackground = () => {
+    console.log(window.scrollY);
+    if (window.scrollY > 3) {
+      setNavbar(true);
+    } else {
+      setNavbar(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", changeBackground);
+  }, [window.scrollY]);
+
   return (
-    <div className="navbar">
+    <div className={navbar ? "navbar active" : "navbar"}>
       <div className="navbar-left">
         <img src={logo} alt="" />
         <ul>
-          <li>Home</li>
-          <li>TV Shows</li>
-          <li>Movies</li>
-          <li>New & Popular</li>
-          <li>My List</li>
-          <li>Browse by Languages</li>
+          <button>Destaques</button>
+          <li>
+            <button>Recomendados para você</button>
+          </li>
+          <li>
+            <button>Filmes</button>
+          </li>
+          <li>
+            <button>Novo e Popular</button>
+          </li>
+          <li>
+            <button>Meus Favoritos</button>
+          </li>
+          <li>
+            <button>Filmes já assistidos</button>
+          </li>
         </ul>
       </div>
       <div className="navbar-right">
-        <img src={search_icon} alt="Search Icon" className="icons" />
-        <p>Children</p>
-        <img src={bell_icon} alt="Search Icon" className="icons" />
+        <button>
+          <span class="material-icons">search</span>
+        </button>
+        <p className="user">NOME DO USUARIO</p>
         <div className="navbar-profile">
-          <img src={profile_img} alt="Profile Img" className="profile" />
-          <img src={caret_icon} alt="Caret Icon" />
+          <span className="material-icons">account_circle</span>
+
+          <span class="material-icons">arrow_drop_down</span>
+
           <div className="dropdown">
-            <p>Sign out of NOSSO SITE DE FILMES</p>
+            <p>
+              <Link to="/login">Desconectar-se de StreamStar?</Link>
+            </p>
           </div>
         </div>
       </div>
