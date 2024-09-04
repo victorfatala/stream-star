@@ -4,6 +4,7 @@ import back_arrow_icon from '../../assets/back_arrow_icon.png'
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+
 const Player = () => {
 
   const {id} = useParams();

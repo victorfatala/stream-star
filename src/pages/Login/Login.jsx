@@ -3,6 +3,7 @@ import "./Login.css";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { login, signup } from "../../firebase";
+import streamstar_spinner from "../../assets/streamstar_spinner.gif";
 
 const Login = () => {
   let navigate = useNavigate();
@@ -11,14 +12,17 @@ const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const user_auth = async (event) => {
     event.preventDefault();
+    setLoading(true);
     if (signState === "Entrar") {
       await login(email, password);
     } else {
       await signup(name, email, password);
     }
+    setLoading(false);
   };
 
   const handleSubmit = (event) => {
@@ -27,6 +31,9 @@ const Login = () => {
   };
 
   return (
+    loading?<div className="login-spinner">
+      <img src={streamstar_spinner} alt="" />
+    </div>:
     <div className="login">
       <img src={logo} className="login-logo" onClick={() => {}} />
       <div className="login-form">

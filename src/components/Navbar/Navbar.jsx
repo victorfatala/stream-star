@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import "./Navbar.css";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
+import { logout, signup } from "../../firebase";
+import firebase from "firebase/compat/app";
+
 
 const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
@@ -20,16 +23,16 @@ const Navbar = () => {
     window.addEventListener("scroll", changeBackground);
   }, [window.scrollY]);
 
-  useEffect(() =>{
-    window.addEventListener('scroll', ()=>{
-      if(window.screenY >= 80){
-        navRef.current.classList.add('nav-dark')
-      }else{
-        navRef.current.classList.remove('nav-dark')
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (window.screenY >= 80) {
+        navRef.current.classList.add("nav-dark");
+      } else {
+        navRef.current.classList.remove("nav-dark");
       }
-    })
-  }, [])
-  
+    });
+  }, []);
+
 
   return (
     <div ref={navRef} className={navbar ? "navbar active" : "navbar"}>
@@ -58,17 +61,20 @@ const Navbar = () => {
         <button>
           <span class="material-icons">search</span>
         </button>
-        <input class="search" type="text" placeholder="Pesquise algo..."/>
-
-        <p className="user">NOME DO USUARIO</p>
+        <input class="search" type="text" placeholder="Pesquise algo..." />
+          <p className="user">NOME DO USUÁRIO</p>
         <div className="navbar-profile">
           <span className="material-icons">account_circle</span>
 
           <span class="material-icons">arrow_drop_down</span>
 
           <div className="dropdown">
-            <p>
-              <Link to="/login">Desconectar-se de StreamStar?</Link>
+            <p
+              onClick={() => {
+                logout();
+              }}
+            >
+              Desconectar-se de StreamStar?
             </p>
           </div>
         </div>
