@@ -37,9 +37,9 @@ const Home = () => {
         </div>
       </div>
       <div className="more-cards">
-        <TitleCards id="carousel-1" title={"Recomendados para você"} />
-        <TitleCards id="carousel-2" title={"Filmes"} />
-        <TitleCards id="carousel-3" title={"Populares"} />
+        <TitleCards id="carousel-1" title={"Recomendados para você"} category={"now_playing"}/>
+        <TitleCards id="carousel-2" title={"Filmes"} category={"popular"}/>
+        <TitleCards id="carousel-3" title={"Populares"} category={"top_rated"}/>
         <TitleCards id="carousel-4" title={"Meus Favoritos"} />
         <TitleCards id="carousel-4" title={"Filmes já assistidos"} />
       </div>

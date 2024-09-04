@@ -1,51 +1,37 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./TitleCards.css";
 import cards_data from "../../assets/cards/Cards_data";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Link } from "react-router-dom";
 
-// function SampleNextArrow(props) {
-//   const { className, style, onClick } = props;
-//   return (
-//     <div
-//       className={className}
-//       style={{ ...style, display: "none" }}
-//       onClick={onClick}
-//     />
-//   );
-// }
-
-// function SamplePrevArrow(props) {
-//   const { className, style, onClick } = props;
-//   return (
-//     <div
-//       className={className}
-//       style={{ ...style, display: "block" }}
-//       onClick={onClick}
-//     />
-//   );
-// }
 
 const TitleCards = ({ title, category }) => {
-  // const settings = {
-  //   dots: false,
-  //   infinite: true,
-  //   speed: 500,
-  //   slidesToShow: 5,
-  //   slidesToScroll: 1,
-  //   nextArrow: <SampleNextArrow />,
-  //   prevArrow: <SamplePrevArrow />,
-  // };
 
+  const[apiData, setApiData] = useState([]);
   const cardsRef = useRef();
 
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWVlYzMzMmFjMTk4NjY0OTJhOTc2OGQ2YmRhZGUzNyIsIm5iZiI6MTcyNTQ1NTI5OS44NDk3MTYsInN1YiI6IjY2ZDg1YTk2NWNkZjI3OWZmNTE4Mjk2NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hhuZG-MusU4Ozh6PVLx0Zl-oKmZacdax6ocCwDzWPS4'
+    }
+  };
+  
+
   const handleWheel = (event) => {
-    event.preventDefault(); // preventDefault() avoids scrolling the page vertically
+    event.preventDefault(); 
     cardsRef.current.scrollLeft += event.deltaY;
   };
 
   useEffect(() => {
+    fetch(`https://api.themoviedb.org/3/movie/${category?category:"now_playing"}?language=pt-BR&page=1`, options)
+    .then(response => response.json())
+    .then(response => setApiData(response.results))
+    .catch(err => console.error(err));
+
     cardsRef.current.addEventListener("wheel", handleWheel);
   }, []);
 
@@ -53,16 +39,14 @@ const TitleCards = ({ title, category }) => {
     <div className="title-cards">
       <h2>{title ? title : "Destaques"}</h2>
       <div className="card-list" ref={cardsRef}>
-        {/* <Slider className="slider" {...settings}> */}
-        {cards_data.map((card, index) => {
+        {apiData.map((card, index) => {
           return (
-            <div className="card" key={index}>
-              <img src={card.image} alt="" />
-              <p>{card.name}</p>
-            </div>
+            <Link to={`/player/${card.id}`} className="card" key={index}>
+              <img src={`https://image.tmdb.org/t/p/w500${card.backdrop_path}`} alt="" />
+              <p>{card.original_title}</p>
+            </Link>
           );
         })}
-        {/* </Slider> */}
       </div>
     </div>
   );

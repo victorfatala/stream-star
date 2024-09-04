@@ -2,11 +2,24 @@ import React, { useState } from "react";
 import "./Login.css";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { login, signup } from "../../firebase";
 
 const Login = () => {
   let navigate = useNavigate();
 
   const [signState, setSignState] = useState("Entrar");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const user_auth = async (event) => {
+    event.preventDefault();
+    if (signState === "Entrar") {
+      await login(email, password);
+    } else {
+      await signup(name, email, password);
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,13 +33,36 @@ const Login = () => {
         <h1>{signState}</h1>
         <form onSubmit={(event) => handleSubmit(event)}>
           {signState === "Cadastrar" ? (
-            <input type="text" placeholder="Seu nome" />
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              placeholder="Seu nome"
+            />
           ) : (
             <></>
           )}
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Senha" />
-          <button type="submit">{signState}</button>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            placeholder="Senha"
+          />
+          <button onClick={user_auth} type="submit">
+            {signState}
+          </button>
           <div className="form-help">
             <div className="remember">
               <input type="checkbox" />

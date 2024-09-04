@@ -73,6 +73,19 @@
   border-radius: 4px;
   width: 35px;
 }
+.navbar .search{
+  position: absolute;
+  top: 70%;
+  right: 15rem;
+  width: max-content;
+  background: #c285ff;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 2px;
+  z-index: 1;
+  display: none;
+}
 .navbar-right button {
   border: 0;
   outline: 0;
@@ -114,6 +127,9 @@
 }
 .navbar-profile span {
   font-size: 35px;
+}
+.nav-dark{
+  background: #141414;
 }
 .border-bottom {
   height: 10px;

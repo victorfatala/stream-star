@@ -40,7 +40,8 @@
   position: absolute;
   bottom: 10px;
   right: 10px;
-  /* display: none; */
+  text-decoration: none;
+  color: #fff;
 }
 @media (max-width: 800px) {
   .title-cards {
