@@ -44,12 +44,33 @@ const Navbar = () => {
       <div className="navbar-left">
         <img src={logo} alt="Logo" />
         <ul>
-          <li><button>Destaques</button></li>
-          <li><button>Recomendados para você</button></li>
-          <li><button>Filmes</button></li>
-          <li><button>Novo e Popular</button></li>
-          <li><button>Meus Favoritos</button></li>
-          <li><button>Filmes já assistidos</button></li>
+          <li>
+            <button>Destaques</button>
+          </li>
+          <li>
+            <button>Recomendados para você</button>
+          </li>
+          <li>
+            <button>Filmes</button>
+          </li>
+          <li>
+            <button>Novo e Popular</button>
+          </li>
+          <li>
+            {" "}
+            {user ? (
+              <Link to={`/favorites/${user.uid}`}>Meus Favoritos</Link>
+            ) : (
+              <button>Meus Favoritos</button>
+            )}
+          </li>
+          <li>
+            {user ? (
+              <Link to={`/watched/${user.uid}`}>Filmes Assistidos</Link>
+            ) : (
+              <button>Filmes Assistidos</button>
+            )}
+          </li>
         </ul>
       </div>
       <div className="navbar-right">
@@ -57,12 +78,17 @@ const Navbar = () => {
           <span className="material-icons">search</span>
         </button>
         <input className="search" type="text" placeholder="Pesquise algo..." />
-        <p className="user">{user ? `${user.displayName || user.email}` : "Carregando..."}</p>
+        <p className="user">
+          {user ? `${user.displayName || user.email}` : "Carregando..."}
+        </p>
         <div className="navbar-profile">
           <span className="material-icons">account_circle</span>
           <span className="material-icons">arrow_drop_down</span>
           <div className="dropdown">
-            <p onClick={handleLogout}>Desconectar-se de {user ? `${user.displayName || user.email}` : "Carregando..."}</p>
+            <p onClick={handleLogout}>
+              Desconectar-se de{" "}
+              {user ? `${user.displayName || user.email}` : "Carregando..."}
+            </p>
           </div>
         </div>
       </div>

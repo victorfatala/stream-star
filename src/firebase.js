@@ -4,9 +4,17 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   signOut,
-  updateProfile
+  updateProfile,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, updateDoc, arrayUnion, getFirestore } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  getFirestore,
+} from "firebase/firestore";
 import { toast } from "react-toastify";
 
 const firebaseConfig = {
@@ -29,7 +37,6 @@ const signup = async (name, email, password) => {
 
     await updateProfile(user, { displayName: name });
 
-    // Adiciona o usuário à coleção 'users'
     await setDoc(doc(db, "users", user.uid), {
       name,
       email,
@@ -39,7 +46,7 @@ const signup = async (name, email, password) => {
     toast.success("Usuário criado com sucesso!");
   } catch (error) {
     console.error(error);
-    toast.error(error.code.split('/')[1].split('-').join(" "));
+    toast.error(error.code.split("/")[1].split("-").join(" "));
   }
 };
 
@@ -49,7 +56,7 @@ const login = async (email, password) => {
     console.log(auth);
   } catch (error) {
     console.error(error);
-    toast.error(error.code.split('/')[1].split('-').join(" "));
+    toast.error(error.code.split("/")[1].split("-").join(" "));
   }
 };
 
@@ -59,18 +66,88 @@ const logout = () => {
   });
 };
 
+const addFavoriteMovie = async (movie) => {
+  if (auth.currentUser) {
+    const userId = auth.currentUser.uid;
+    const userDocRef = doc(db, "favorites", userId);
+    try {
+      await updateDoc(userDocRef, {
+        movies: arrayUnion({
+          id: movie.id,
+          title: movie.title,
+          backdrop_path: movie.backdrop_path,
+          poster_path: movie.poster_path,
+          overview: movie.overview,
+        }),
+      });
+    } catch (error) {
+      console.error("Erro ao adicionar filme aos favoritos:", error);
+    }
+  }
+};
+
+const removeFavoriteMovie = async (movieId) => {
+  if (!auth.currentUser) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const userId = auth.currentUser.uid;
+  const userDocRef = doc(db, "favorites", userId);
+
+  try {
+    await updateDoc(userDocRef, {
+      movies: arrayRemove({ id: movieId })
+    });
+  } catch (error) {
+    console.error("Erro ao remover filme dos favoritos:", error);
+    throw error;
+  }
+};
+
 const addWatchedMovie = async (movieData) => {
   if (auth.currentUser) {
     const userId = auth.currentUser.uid;
     const userDocRef = doc(db, "watched", userId);
 
-    // Adiciona o filme ao array 'movies' do documento
-    await updateDoc(userDocRef, {
-      movies: arrayUnion(movieData)
-    });
+    try {
+      await updateDoc(userDocRef, {
+        movies: arrayUnion({
+          id: movieData.id,
+          title: movieData.title,
+          backdrop_path: movieData.backdrop_path,
+          genre_ids: movieData.genre_ids,
+          overview: movieData.overview,
+          popularity: movieData.popularity,
+          poster_path: movieData.poster_path,
+          release_date: movieData.release_date,
+          vote_average: movieData.vote_average,
+          vote_count: movieData.vote_count,
+          watchedAt: new Date().toISOString(),
+        }),
+      });
+
+      console.log("Filme adicionado aos assistidos com sucesso.");
+    } catch (error) {
+      console.error("Erro ao adicionar filme aos assistidos:", error);
+    }
   } else {
     console.error("Usuário não autenticado");
   }
 };
 
-export { auth, db, login, signup, logout, setDoc, getDoc, updateDoc, arrayUnion, addWatchedMovie };
+export {
+  auth,
+  db,
+  doc,
+  login,
+  signup,
+  logout,
+  setDoc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  addFavoriteMovie,
+  removeFavoriteMovie,
+  addWatchedMovie,
+};

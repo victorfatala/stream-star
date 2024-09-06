@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../../firebase'; // Verifique se o caminho está correto
+import { db, auth } from '../../firebase'; // Verifique se o caminho está correto
 
 const Watch = () => {
   const { uid } = useParams(); // Captura o parâmetro 'uid' da URL
@@ -14,17 +14,33 @@ const Watch = () => {
       console.log(`Fetching movies for user ${uid}`); // Log de depuração
       try {
         if (uid) {
-          const userDocRef = doc(db, 'watched', uid);
-          const userDoc = await getDoc(userDocRef);
+          // Verificar se o usuário está autenticado
+          if (!auth.currentUser || auth.currentUser.uid !== uid) {
+            throw new Error('Usuário não autenticado ou UID incorreto.');
+          }
 
-          if (userDoc.exists()) {
-            const data = userDoc.data();
+          // Acesse o documento da coleção 'watched' com base no UID
+          const userWatchedDocRef = doc(db, 'watched', uid);
+          const userWatchedDoc = await getDoc(userWatchedDocRef);
+
+          if (userWatchedDoc.exists()) {
+            const data = userWatchedDoc.data();
             console.log('Data fetched:', data); // Log de depuração
-            setMovies(Array.isArray(data.movies) ? data.movies : []);
+
+            // Verifique o conteúdo de 'movies'
+            if (data.movies) {
+              console.log('Movies data:', data.movies); // Log de depuração
+              setMovies(Array.isArray(data.movies) ? data.movies : []);
+            } else {
+              console.log('Campo "movies" não encontrado.');
+              setMovies([]);
+            }
           } else {
-            console.log('Nenhum filme assistido encontrado.');
+            console.log('Nenhum documento encontrado para o UID fornecido.');
             setMovies([]);
           }
+        } else {
+          console.log('UID não encontrado.');
         }
       } catch (error) {
         console.error('Erro ao buscar filmes assistidos:', error);
@@ -50,12 +66,19 @@ const Watch = () => {
       <h2>Filmes Assistidos</h2>
       <ul>
         {movies.length > 0 ? (
-          movies.map((movie) => (
-            <li key={movie.id}>
-              <p>{movie.title}</p>
+          movies.map((movie, index) => (
+            <li key={index}>
+              <p>{movie.title || 'Título não disponível'}</p>
               <p>
-                Assistido em: {new Date(movie.watchedAt).toLocaleDateString()}
+                Assistido em: {movie.watchedAt ? new Date(movie.watchedAt).toLocaleDateString() : 'Data não disponível'}
               </p>
+              {movie.poster_path && (
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                  style={{ width: '100px', height: 'auto' }}
+                />
+              )}
             </li>
           ))
         ) : (
