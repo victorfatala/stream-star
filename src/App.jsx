@@ -7,6 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Watch from './pages/watch/Watch';
 
 const App = () => {
 
@@ -16,10 +17,8 @@ const App = () => {
   useEffect(()=>{
     onAuthStateChanged(auth, async(user)=>{
       if (user) {
-        console.log("Logged In");
         navigate('/');
       }else{
-        console.log("Logged Out");
         navigate('/login');
       }
     })
@@ -36,6 +35,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/player/:id" element={<Player/>}></Route>
+        <Route path="/watched/:uid" element={<Watch/>}></Route>
       </Routes>
     </div>
   );

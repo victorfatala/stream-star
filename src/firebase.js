@@ -4,11 +4,10 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile
 } from "firebase/auth";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc, arrayUnion, getFirestore } from "firebase/firestore";
 import { toast } from "react-toastify";
-
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyBv15xwe2rVvt4t1yq5XYbWlq9yXog9vY8",
@@ -27,34 +26,51 @@ const signup = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    await addDoc(collection(db, "user"), {
-      uid: user.uid,
+
+    await updateProfile(user, { displayName: name });
+
+    // Adiciona o usuário à coleção 'users'
+    await setDoc(doc(db, "users", user.uid), {
       name,
-      authProvider: "local",
       email,
+      authProvider: "local",
     });
+
+    toast.success("Usuário criado com sucesso!");
   } catch (error) {
-    console.log(error);
+    console.error(error);
     toast.error(error.code.split('/')[1].split('-').join(" "));
   }
 };
 
 const login = async (email, password) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password)
+    await signInWithEmailAndPassword(auth, email, password);
+    console.log(auth);
   } catch (error) {
-   console.log(error);
-   toast.error(error.code.split('/')[1].split('-').join(" "));
+    console.error(error);
+    toast.error(error.code.split('/')[1].split('-').join(" "));
   }
 };
 
-const history = async(moviehistory) =>{
- const user = await create
-}
+const logout = () => {
+  signOut(auth).catch((error) => {
+    console.error("Erro durante o logout:", error);
+  });
+};
 
-const logout = ()=>{
- signOut(auth);
-}
+const addWatchedMovie = async (movieData) => {
+  if (auth.currentUser) {
+    const userId = auth.currentUser.uid;
+    const userDocRef = doc(db, "watched", userId);
 
+    // Adiciona o filme ao array 'movies' do documento
+    await updateDoc(userDocRef, {
+      movies: arrayUnion(movieData)
+    });
+  } else {
+    console.error("Usuário não autenticado");
+  }
+};
 
-export {auth, db, login, signup, logout};
+export { auth, db, login, signup, logout, setDoc, getDoc, updateDoc, arrayUnion, addWatchedMovie };
