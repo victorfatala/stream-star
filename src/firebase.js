@@ -72,15 +72,12 @@ const addFavoriteMovie = async (movie) => {
     const userDocRef = doc(db, "favorites", userId);
 
     try {
-      // Verifica se o documento já existe
       const docSnap = await getDoc(userDocRef);
 
       if (!docSnap.exists()) {
-        // Se o documento não existir, cria um novo documento com um array vazio
         await setDoc(userDocRef, { movies: [] });
       }
 
-      // Adiciona o filme aos favoritos
       await updateDoc(userDocRef, {
         movies: arrayUnion({
           id: movie.id,
@@ -99,7 +96,6 @@ const addFavoriteMovie = async (movie) => {
     console.error("Usuário não autenticado");
   }
 };
-
 
 const removeFavoriteMovie = async (movieId) => {
   if (!auth.currentUser) {
@@ -125,21 +121,42 @@ const addWatchedMovie = async (movieData) => {
     const userDocRef = doc(db, "watched", userId);
 
     try {
-      await updateDoc(userDocRef, {
-        movies: arrayUnion({
-          id: movieData.id,
-          title: movieData.title,
-          backdrop_path: movieData.backdrop_path,
-          genre_ids: movieData.genre_ids,
-          overview: movieData.overview,
-          popularity: movieData.popularity,
-          poster_path: movieData.poster_path,
-          release_date: movieData.release_date,
-          vote_average: movieData.vote_average,
-          vote_count: movieData.vote_count,
-          watchedAt: new Date().toISOString(),
-        }),
-      });
+      // Verifica se o documento já existe
+      const docSnap = await getDoc(userDocRef);
+
+      if (!docSnap.exists()) {
+        // Se o documento não existir, cria um novo documento com um array vazio
+        await setDoc(userDocRef, { movies: [] });
+      }
+
+      // Adiciona ou atualiza o filme no array
+      const movieExists = docSnap.data().movies.some(movie => movie.id === movieData.id);
+
+      if (movieExists) {
+        // Atualiza o filme existente
+        await updateDoc(userDocRef, {
+          movies: docSnap.data().movies.map(movie =>
+            movie.id === movieData.id ? { ...movie, watchedAt: movieData.watchedAt } : movie
+          )
+        });
+      } else {
+        // Adiciona o novo filme
+        await updateDoc(userDocRef, {
+          movies: arrayUnion({
+            id: movieData.id,
+            title: movieData.title,
+            backdrop_path: movieData.backdrop_path,
+            genre_ids: movieData.genre_ids,
+            overview: movieData.overview,
+            popularity: movieData.popularity,
+            poster_path: movieData.poster_path,
+            release_date: movieData.release_date,
+            vote_average: movieData.vote_average,
+            vote_count: movieData.vote_count,
+            watchedAt: movieData.watchedAt,
+          })
+        });
+      }
 
       console.log("Filme adicionado aos assistidos com sucesso.");
     } catch (error) {

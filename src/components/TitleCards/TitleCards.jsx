@@ -65,29 +65,35 @@ const TitleCards = ({ title, category }) => {
 
   const addToWatched = async (movieData) => {
     const userId = auth.currentUser ? auth.currentUser.uid : null;
-
+  
     if (!userId) {
       console.error("Usuário não autenticado");
       return;
     }
-
+  
     const { id, title } = movieData;
     const watchedAt = new Date().toISOString();
-
+  
     if (!id || !title) {
       console.error("Dados do filme inválidos:", movieData);
       return;
     }
-
+  
     try {
       const updatedMovieData = { ...movieData, watchedAt };
       console.log("Enviando dados para o backend:", updatedMovieData);
-      const response = await axios.post(`http://localhost:5000/watched/${userId}`, updatedMovieData);
+      const response = await axios.post(`http://localhost:5000/watched/${userId}`, updatedMovieData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       console.log("Resposta do backend:", response.data);
     } catch (error) {
       console.error("Erro ao adicionar filme aos assistidos:", error.response ? error.response.data : error.message);
     }
   };
+  
+
 
   useEffect(() => {
     fetch(

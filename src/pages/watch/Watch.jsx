@@ -25,13 +25,7 @@ const Watch = () => {
             const data = userWatchedDoc.data();
             console.log('Data fetched:', data);
 
-            if (data.movies) {
-              console.log('Movies data:', data.movies);
-              setMovies(Array.isArray(data.movies) ? data.movies : []);
-            } else {
-              console.log('Campo "movies" não encontrado.');
-              setMovies([]);
-            }
+            setMovies(Array.isArray(data.movies) ? data.movies : []);
           } else {
             console.log('Nenhum documento encontrado para o UID fornecido.');
             setMovies([]);
@@ -54,11 +48,11 @@ const Watch = () => {
     try {
       const userWatchedDocRef = doc(db, 'watched', uid);
 
-      // Find if the movie already exists in the list
+      console.log("Atualizando filmes assistidos com:", newMovie);
+
       const movieExists = movies.some(movie => movie.id === newMovie.id);
 
       if (movieExists) {
-        // Update the existing movie's watched date
         const updatedMovies = movies.map(movie =>
           movie.id === newMovie.id ? { ...movie, watchedAt: newMovie.watchedAt } : movie
         );
@@ -68,7 +62,6 @@ const Watch = () => {
           movies: updatedMovies
         });
       } else {
-        // Add new movie to the list
         const updatedMovies = [...movies, newMovie];
         setMovies(updatedMovies);
 
@@ -76,6 +69,8 @@ const Watch = () => {
           movies: arrayUnion(newMovie)
         });
       }
+
+      console.log("Filmes atualizados com sucesso.");
     } catch (error) {
       console.error('Erro ao atualizar filmes assistidos:', error);
       setError('Erro ao atualizar filmes assistidos.');
