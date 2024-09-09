@@ -1,35 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
-import { db, auth } from '../../firebase'; // Verifique se o caminho está correto
+import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { db, auth } from '../../firebase';
 
 const Watch = () => {
-  const { uid } = useParams(); // Captura o parâmetro 'uid' da URL
+  const { uid } = useParams();
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchWatchedMovies = async () => {
-      console.log(`Fetching movies for user ${uid}`); // Log de depuração
+      console.log(`Fetching movies for user ${uid}`);
       try {
         if (uid) {
-          // Verificar se o usuário está autenticado
           if (!auth.currentUser || auth.currentUser.uid !== uid) {
             throw new Error('Usuário não autenticado ou UID incorreto.');
           }
 
-          // Acesse o documento da coleção 'watched' com base no UID
           const userWatchedDocRef = doc(db, 'watched', uid);
           const userWatchedDoc = await getDoc(userWatchedDocRef);
 
           if (userWatchedDoc.exists()) {
             const data = userWatchedDoc.data();
-            console.log('Data fetched:', data); // Log de depuração
+            console.log('Data fetched:', data);
 
-            // Verifique o conteúdo de 'movies'
             if (data.movies) {
-              console.log('Movies data:', data.movies); // Log de depuração
+              console.log('Movies data:', data.movies);
               setMovies(Array.isArray(data.movies) ? data.movies : []);
             } else {
               console.log('Campo "movies" não encontrado.');
@@ -51,7 +48,39 @@ const Watch = () => {
     };
 
     fetchWatchedMovies();
-  }, [uid]); // Dependência do useEffect é o parâmetro 'uid'
+  }, [uid]);
+
+  const updateWatchedMovies = async (newMovie) => {
+    try {
+      const userWatchedDocRef = doc(db, 'watched', uid);
+
+      // Find if the movie already exists in the list
+      const movieExists = movies.some(movie => movie.id === newMovie.id);
+
+      if (movieExists) {
+        // Update the existing movie's watched date
+        const updatedMovies = movies.map(movie =>
+          movie.id === newMovie.id ? { ...movie, watchedAt: newMovie.watchedAt } : movie
+        );
+        setMovies(updatedMovies);
+
+        await updateDoc(userWatchedDocRef, {
+          movies: updatedMovies
+        });
+      } else {
+        // Add new movie to the list
+        const updatedMovies = [...movies, newMovie];
+        setMovies(updatedMovies);
+
+        await updateDoc(userWatchedDocRef, {
+          movies: arrayUnion(newMovie)
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar filmes assistidos:', error);
+      setError('Erro ao atualizar filmes assistidos.');
+    }
+  };
 
   if (loading) {
     return <p>Carregando...</p>;

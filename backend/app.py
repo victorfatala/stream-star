@@ -4,10 +4,9 @@ import os
 
 app = Flask(__name__)
 
-# Configurações do Firebase
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../src/credentials.json"  # Use o caminho correto para o arquivo de credenciais
 
-# Inicialize o cliente Firestore
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./credentials.json"  
+
 db = firestore.Client()
 
 @app.route('/watched/<user_id>', methods=['GET'])
@@ -34,7 +33,6 @@ def add_watched_movie(user_id):
         
         doc_ref = db.collection('watched').document(user_id)
         
-        # Adiciona o filme assistido ao banco de dados
         doc_ref.set({
             "movies": firestore.ArrayUnion([movie_data])
         }, merge=True)

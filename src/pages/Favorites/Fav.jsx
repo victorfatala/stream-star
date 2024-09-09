@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { db, doc, getDoc } from '../../firebase'; // Verifique o caminho
-import { auth } from '../../firebase'; // Certifique-se de importar o auth
+import { db, doc, getDoc } from '../../firebase'; 
+import { auth } from '../../firebase'; 
 
 const Fav = () => {
   const [movies, setMovies] = useState([]);

@@ -3,6 +3,7 @@ import "./Player.css";
 import back_arrow_icon from '../../assets/back_arrow_icon.png'
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import logo from "../../assets/logo.png";
 
 
 const Player = () => {
@@ -36,14 +37,15 @@ const Player = () => {
   return(
     <div className="player">
       <img src={back_arrow_icon} alt="" onClick={()=>{navigate("/")}}/>
+      <img src={logo} alt="" onClick={()=>{navigate("/")}}/>
       <iframe width='90%' height='90%'
       src={`https://www.youtube.com/embed/${apiData.key}`}
-      title='trailer' frameBorder='0' allowFullScreen
+      title='trailer' frameBorder='0' allowFullScreen 
       ></iframe>
       <div className="player-info">
-        <p>{apiData.published_at.slice(0)}</p>
+{/*         <p>{apiData.published_at.slice(0)}</p>
         <p>{apiData.name}</p>
-        <p>{apiData.type}</p>
+        <p>{apiData.type}</p> */}
       </div>
     </div>
   );

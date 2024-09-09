@@ -70,7 +70,17 @@ const addFavoriteMovie = async (movie) => {
   if (auth.currentUser) {
     const userId = auth.currentUser.uid;
     const userDocRef = doc(db, "favorites", userId);
+
     try {
+      // Verifica se o documento já existe
+      const docSnap = await getDoc(userDocRef);
+
+      if (!docSnap.exists()) {
+        // Se o documento não existir, cria um novo documento com um array vazio
+        await setDoc(userDocRef, { movies: [] });
+      }
+
+      // Adiciona o filme aos favoritos
       await updateDoc(userDocRef, {
         movies: arrayUnion({
           id: movie.id,
@@ -80,11 +90,16 @@ const addFavoriteMovie = async (movie) => {
           overview: movie.overview,
         }),
       });
+
+      console.log("Filme adicionado aos favoritos com sucesso.");
     } catch (error) {
       console.error("Erro ao adicionar filme aos favoritos:", error);
     }
+  } else {
+    console.error("Usuário não autenticado");
   }
 };
+
 
 const removeFavoriteMovie = async (movieId) => {
   if (!auth.currentUser) {

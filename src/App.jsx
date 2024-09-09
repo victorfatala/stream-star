@@ -8,6 +8,7 @@ import { auth } from "./firebase";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Watch from './pages/watch/Watch';
+import Fav from "./pages/Favorites/Fav";
 
 const App = () => {
 
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/player/:id" element={<Player/>}></Route>
         <Route path="/watched/:uid" element={<Watch/>}></Route>
+        <Route path="/favorites/:uid" element={<Fav/>}></Route>
       </Routes>
     </div>
   );
