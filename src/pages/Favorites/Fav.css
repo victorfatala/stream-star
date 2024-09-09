@@ -1,0 +1,146 @@
+.fav {
+ font-family: Arial, sans-serif;
+ background-color: #000;
+ color: #fff;
+}
+
+.fav-hero {
+ position: relative;
+ padding-top: 70px; 
+}
+
+.fav-banner-img {
+ width: 100%;
+ mask-image: linear-gradient(to right, transparent, black 75%);
+ -webkit-mask-image: linear-gradient(to right, transparent, black 75%);
+}
+
+.fav-hero-caption {
+ width: 100%;
+ padding: 20px 6%;
+ display: flex;
+ justify-content: center;
+}
+
+.fav-hero-caption h2 {
+ font-size: 2.5em;
+ color: #fff;
+ text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+ animation: fadeIn 1s ease-out;
+}
+
+.fav-cards-container {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+ gap: 20px;
+ padding: 20px 6%;
+ justify-items: center; /* Alinha os itens ao centro */
+}
+
+/* Adiciona um estilo especial quando há apenas um item */
+.fav-cards-container:only-child {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ min-height: 200px; /* Ajuste conforme necessário */
+}
+
+.fav-card {
+ cursor: pointer;
+ background: #333;
+ border-radius: 10px;
+ box-shadow: 0 4px 8px rgba(123, 122, 122, 0.3);
+ padding: 15px;
+ text-align: center;
+ position: relative;
+ transition: transform 0.3s, box-shadow 0.3s;
+ animation: slideUp 0.5s ease-out;
+}
+
+.fav-card:hover {
+ transform: scale(1.05);
+ box-shadow: 0 8px 16px rgba(123, 122, 122, 0.5);
+}
+
+.fav-card-img {
+ width: 100%;
+ height: auto; /* Manter a proporção da imagem */
+ max-height: 400px; /* Ajuste conforme necessário */
+ object-fit: cover; /* Ajuste conforme necessário */
+ border-radius: 4px;
+ transition: opacity 0.3s;
+}
+
+.fav-card-title {
+ margin-top: 10px;
+ font-size: 14px;
+}
+
+.fav-remove-btn {
+ position: absolute;
+ top: 10px;
+ right: 10px;
+ background: transparent;
+ border: none;
+ cursor: pointer;
+ transition: opacity 0.3s;
+}
+
+.fav-remove-btn {
+ font-size: 40px;
+ background-color: #333;
+ color: red;
+ border-radius: 10px;
+ transition: .5s ease-in-out;
+}
+
+.fav-remove-btn:hover {
+   background-color: red;
+   color: #333;
+   transition: .5s ease-in-out;
+}
+
+.fav-loading, .fav-error {
+ text-align: center;
+ font-size: 1.2em;
+ margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+ .fav-hero-caption h2 {
+   font-size: 2em;
+ }
+}
+
+@media (max-width: 800px) {
+ .fav-cards-container {
+   padding: 20px 4%;
+ }
+}
+
+@media (max-width: 500px) {
+ .fav-card {
+   padding: 10px;
+ }
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+ from {
+   opacity: 0;
+ }
+ to {
+   opacity: 1;
+ }
+}
+
+@keyframes slideUp {
+ from {
+   transform: translateY(20px);
+   opacity: 0;
+ }
+ to {
+   transform: translateY(0);
+   opacity: 1;
+ }
+}

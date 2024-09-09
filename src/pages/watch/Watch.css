@@ -1,0 +1,142 @@
+.watch {
+ font-family: Arial, sans-serif;
+ background-color: #000;
+ color: #fff;
+}
+
+.watch-hero {
+ position: relative;
+ padding-top: 70px;
+}
+
+.watch-banner-img {
+ width: 100%;
+ mask-image: linear-gradient(to right, transparent, black 75%);
+ -webkit-mask-image: linear-gradient(to right, transparent, black 75%);
+}
+
+.watch-hero-caption {
+ width: 100%;
+ padding: 20px 6%;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+.watch-hero-caption h2 {
+ font-size: 2.5em;
+ color: #fff;
+ text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+ margin-bottom: 20px;
+}
+
+.watch-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px 6%;
+}
+
+/* Adiciona um estilo especial quando há apenas um item */
+.watch-cards-container:only-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px; /* Ajuste conforme necessário */
+}
+
+.watch-card {
+ cursor: pointer;
+ background: #333;
+ border-radius: 10px;
+ box-shadow: 0 4px 8px rgba(123, 122, 122, 0.3);
+ padding: 15px;
+ text-align: center;
+ position: relative;
+ transition: transform 0.3s, box-shadow 0.3s;
+ animation: slideUp 0.5s ease-out;
+}
+
+.watch-card:hover {
+ transform: scale(1.05);
+ box-shadow: 0 8px 16px rgba(123, 122, 122, 0.5);
+}
+
+.watch-card-img {
+  width: 100%;
+  height: auto; /* Manter a proporção da imagem */
+  max-height: 400px; /* Ajuste conforme necessário */
+  object-fit: cover; /* Ajuste conforme necessário */
+  border-radius: 4px;
+  transition: opacity 0.3s;
+}
+
+.watch-card-title {
+ margin-top: 10px;
+ font-size: 14px;
+}
+
+.watch-card-date {
+ font-size: 12px;
+ color: #aaa;
+}
+
+.watch-remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s;
+ }
+ 
+ .watch-remove-btn {
+  font-size: 40px;
+  background-color: #333;
+  color: red;
+  border-radius: 10px;
+  transition: .5s ease-in-out;
+ }
+ 
+ .watch-remove-btn:hover {
+    background-color: red;
+    color: #333;
+    transition: .5s ease-in-out;
+ }
+
+.watch-loading, .watch-error {
+ text-align: center;
+ font-size: 1.2em;
+ margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+ .watch-hero-caption h2 {
+   font-size: 2em;
+ }
+}
+
+@media (max-width: 800px) {
+ .watch-card {
+   padding: 10px;
+ }
+}
+
+@media (max-width: 500px) {
+ .watch-card {
+   padding: 8px;
+ }
+}
+
+/* Keyframe animations */
+@keyframes slideUp {
+ from {
+   transform: translateY(20px);
+   opacity: 0;
+ }
+ to {
+   transform: translateY(0);
+   opacity: 1;
+ }
+}

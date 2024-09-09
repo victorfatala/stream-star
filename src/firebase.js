@@ -106,14 +106,28 @@ const removeFavoriteMovie = async (movieId) => {
   const userDocRef = doc(db, "favorites", userId);
 
   try {
+    // Recupera o documento de favoritos
+    const docSnap = await getDoc(userDocRef);
+    if (!docSnap.exists()) {
+      console.error("Documento de favoritos não encontrado.");
+      return;
+    }
+
+    const data = docSnap.data();
+    const updatedMovies = data.movies.filter(movie => movie.id !== movieId);
+
+    // Atualiza o documento com a lista de filmes atualizada
     await updateDoc(userDocRef, {
-      movies: arrayRemove({ id: movieId })
+      movies: updatedMovies
     });
+    console.log("Filme removido dos favoritos com sucesso.");
   } catch (error) {
     console.error("Erro ao remover filme dos favoritos:", error);
     throw error;
   }
 };
+
+
 
 const addWatchedMovie = async (movieData) => {
   if (auth.currentUser) {

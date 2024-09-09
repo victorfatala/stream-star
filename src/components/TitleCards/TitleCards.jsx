@@ -17,7 +17,7 @@ const TitleCards = ({ title, category }) => {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWVlYzMzMmFjMTk4NjY0OTJhOTc2OGQ2YmRhZGUzNyIsIm5iZiI6MTcyNTYyNzI1OS41MzcxMjMsInN1YiI6IjY2ZDg1YTk2NWNkZjI3OWZmNTE4Mjk2NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TyMdGsePzq9XOQkcd6SbNZ0V64FqoiGAduYIl-gn5TA",
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWVlYzMzMmFjMTk4NjY0OTJhOTc2OGQ2YmRhZGUzNyIsIm5iZiI6MTcyNTkwMTU0OC42MzQ2MDEsInN1YiI6IjY2ZDg1YTk2NWNkZjI3OWZmNTE4Mjk2NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2bJB4RKuppWqERaQKkhtPx5QPLw3Rv1rj7ebhJ_AnHw",
     },
   };
 
@@ -45,7 +45,7 @@ const TitleCards = ({ title, category }) => {
         if (favorites.has(movie.id)) {
           // Remove dos favoritos
           await removeFavoriteMovie(movie.id);
-          setFavorites((prevFavorites) => {
+          setFavorites(prevFavorites => {
             const newFavorites = new Set(prevFavorites);
             newFavorites.delete(movie.id);
             return newFavorites;
@@ -53,7 +53,7 @@ const TitleCards = ({ title, category }) => {
         } else {
           // Adiciona aos favoritos
           await addFavoriteMovie(movie);
-          setFavorites((prevFavorites) => new Set(prevFavorites).add(movie.id));
+          setFavorites(prevFavorites => new Set(prevFavorites).add(movie.id));
         }
       } catch (error) {
         console.error("Erro ao atualizar favoritos:", error);
@@ -62,6 +62,7 @@ const TitleCards = ({ title, category }) => {
       console.error("Usuário não autenticado");
     }
   };
+  
 
   const addToWatched = async (movieData) => {
     const userId = auth.currentUser ? auth.currentUser.uid : null;
@@ -81,7 +82,6 @@ const TitleCards = ({ title, category }) => {
   
     try {
       const updatedMovieData = { ...movieData, watchedAt };
-      console.log("Enviando dados para o backend:", updatedMovieData);
       const response = await axios.post(`http://localhost:5000/watched/${userId}`, updatedMovieData, {
         headers: {
           'Content-Type': 'application/json'
@@ -92,8 +92,6 @@ const TitleCards = ({ title, category }) => {
       console.error("Erro ao adicionar filme aos assistidos:", error.response ? error.response.data : error.message);
     }
   };
-  
-
 
   useEffect(() => {
     fetch(
@@ -102,7 +100,6 @@ const TitleCards = ({ title, category }) => {
     )
       .then((response) => response.json())
       .then((response) => {
-        console.log("Dados da API recebidos:", response);
         setApiData(response.results || []);
       })
       .catch((err) => console.error("Erro ao buscar dados da API:", err));
@@ -122,27 +119,28 @@ const TitleCards = ({ title, category }) => {
   }, []);
 
   useEffect(() => {
-    if (auth.currentUser) {
-      const fetchFavorites = async () => {
+    const fetchFavorites = async () => {
+      if (auth.currentUser) {
         const userId = auth.currentUser.uid;
         try {
           const docRef = doc(db, "favorites", userId);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
-            if (data.movies) {
-              const favoriteIds = new Set(data.movies.map(movie => movie.id));
-              setFavorites(favoriteIds);
-            }
+            const favoriteIds = new Set(data.movies.map(movie => movie.id));
+            setFavorites(favoriteIds);
+          } else {
+            setFavorites(new Set());
           }
         } catch (error) {
           console.error("Erro ao buscar favoritos:", error);
         }
-      };
-
-      fetchFavorites();
-    }
+      }
+    };
+  
+    fetchFavorites();
   }, [auth.currentUser]);
+  
 
   return (
     <div className="title-cards">
@@ -151,7 +149,7 @@ const TitleCards = ({ title, category }) => {
         {apiData.map((card) => (
           <div
             className="card"
-            key={card.id} // Use `card.id` como chave única
+            key={card.id}
             onClick={() => handleCardClick(card)}
           >
             <img

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
+import { doc, getDoc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { db, auth } from '../../firebase';
+import './Watch.css';
+import { AiOutlineClose } from "react-icons/ai";
 
 const Watch = () => {
   const { uid } = useParams();
@@ -11,7 +15,6 @@ const Watch = () => {
 
   useEffect(() => {
     const fetchWatchedMovies = async () => {
-      console.log(`Fetching movies for user ${uid}`);
       try {
         if (uid) {
           if (!auth.currentUser || auth.currentUser.uid !== uid) {
@@ -23,11 +26,8 @@ const Watch = () => {
 
           if (userWatchedDoc.exists()) {
             const data = userWatchedDoc.data();
-            console.log('Data fetched:', data);
-
             setMovies(Array.isArray(data.movies) ? data.movies : []);
           } else {
-            console.log('Nenhum documento encontrado para o UID fornecido.');
             setMovies([]);
           }
         } else {
@@ -44,71 +44,60 @@ const Watch = () => {
     fetchWatchedMovies();
   }, [uid]);
 
-  const updateWatchedMovies = async (newMovie) => {
+  const removeMovie = async (movieId) => {
     try {
       const userWatchedDocRef = doc(db, 'watched', uid);
 
-      console.log("Atualizando filmes assistidos com:", newMovie);
+      await updateDoc(userWatchedDocRef, {
+        movies: arrayRemove(movies.find(movie => movie.id === movieId))
+      });
 
-      const movieExists = movies.some(movie => movie.id === newMovie.id);
-
-      if (movieExists) {
-        const updatedMovies = movies.map(movie =>
-          movie.id === newMovie.id ? { ...movie, watchedAt: newMovie.watchedAt } : movie
-        );
-        setMovies(updatedMovies);
-
-        await updateDoc(userWatchedDocRef, {
-          movies: updatedMovies
-        });
-      } else {
-        const updatedMovies = [...movies, newMovie];
-        setMovies(updatedMovies);
-
-        await updateDoc(userWatchedDocRef, {
-          movies: arrayUnion(newMovie)
-        });
-      }
-
-      console.log("Filmes atualizados com sucesso.");
+      setMovies(movies.filter(movie => movie.id !== movieId));
     } catch (error) {
-      console.error('Erro ao atualizar filmes assistidos:', error);
-      setError('Erro ao atualizar filmes assistidos.');
+      console.error('Erro ao remover filme assistido:', error);
+      setError('Erro ao remover filme assistido.');
     }
   };
 
   if (loading) {
-    return <p>Carregando...</p>;
+    return <p className="watch-loading">Carregando...</p>;
   }
 
   if (error) {
-    return <p>Erro: {error}</p>;
+    return <p className="watch-error">Erro: {error}</p>;
   }
 
   return (
-    <div>
-      <h2>Filmes Assistidos</h2>
-      <ul>
-        {movies.length > 0 ? (
-          movies.map((movie, index) => (
-            <li key={index}>
-              <p>{movie.title || 'Título não disponível'}</p>
-              <p>
-                Assistido em: {movie.watchedAt ? new Date(movie.watchedAt).toLocaleDateString() : 'Data não disponível'}
-              </p>
-              {movie.poster_path && (
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  style={{ width: '100px', height: 'auto' }}
-                />
-              )}
-            </li>
-          ))
-        ) : (
-          <p>Nenhum filme assistido encontrado.</p>
-        )}
-      </ul>
+    <div className="watch">
+      <Navbar />
+      <div className="watch-hero">
+        <div className="watch-hero-caption">
+          <h2>Filmes Assistidos</h2>
+          <div className="watch-cards-container">
+            {movies.length > 0 ? (
+              movies.map((movie) => (
+                <div key={movie.id} className="watch-card">
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    alt={movie.title}
+                    className="watch-card-img"
+                  />
+                  <p className="watch-card-title">{movie.title || 'Título não disponível'}</p>
+                  <p className="watch-card-date">
+                    Assistido em: {movie.watchedAt ? new Date(movie.watchedAt).toLocaleDateString() : 'Data não disponível'}
+                  </p>
+                  <button className="watch-remove-btn" onClick={() => removeMovie(movie.id)}>
+                    <AiOutlineClose />
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>Nenhum filme assistido encontrado.</p>
+            )}
+          </div>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };

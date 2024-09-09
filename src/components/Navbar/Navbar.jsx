@@ -42,7 +42,7 @@ const Navbar = () => {
   return (
     <div ref={navRef} className={navbar ? "navbar active" : "navbar"}>
       <div className="navbar-left">
-        <img src={logo} alt="Logo" />
+        <Link className="logo-link" to="/"><img src={logo}  alt="Logo" /></Link>
         <ul>
           <li>
             <button>Destaques</button>

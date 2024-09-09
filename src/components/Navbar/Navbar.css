@@ -61,6 +61,32 @@
   box-shadow: 0 0 35px #c285ff;
   color: black;
 }
+.navbar-left .logo-link{
+  cursor: pointer;
+  margin-top: 1px;
+}
+.navbar-left .logo-link:hover{
+  background: none;
+  box-shadow: none;
+}
+.navbar-left a {
+  border: 0;
+  outline: 0;
+  padding: 8px;
+  background: none;
+  color: white;
+  margin-top: -20px;
+  border-radius: 7px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.navbar-left a:hover {
+  background: #c285ff;
+  box-shadow: 0 0 35px #c285ff;
+  color: black;
+}
 .navbar-right {
   display: flex;
   gap: 20px;
@@ -152,7 +178,8 @@
     padding: 20px 4%;
   }
   .navbar-left ul {
-    display: none;
+    display: flex;
+
   }
 }
 @media (max-width: 500px) {
