@@ -106,7 +106,6 @@ const removeFavoriteMovie = async (movieId) => {
   const userDocRef = doc(db, "favorites", userId);
 
   try {
-    // Recupera o documento de favoritos
     const docSnap = await getDoc(userDocRef);
     if (!docSnap.exists()) {
       console.error("Documento de favoritos não encontrado.");
@@ -114,11 +113,10 @@ const removeFavoriteMovie = async (movieId) => {
     }
 
     const data = docSnap.data();
-    const updatedMovies = data.movies.filter(movie => movie.id !== movieId);
+    const updatedMovies = data.movies.filter((movie) => movie.id !== movieId);
 
-    // Atualiza o documento com a lista de filmes atualizada
     await updateDoc(userDocRef, {
-      movies: updatedMovies
+      movies: updatedMovies,
     });
     console.log("Filme removido dos favoritos com sucesso.");
   } catch (error) {
@@ -127,34 +125,33 @@ const removeFavoriteMovie = async (movieId) => {
   }
 };
 
-
-
 const addWatchedMovie = async (movieData) => {
   if (auth.currentUser) {
     const userId = auth.currentUser.uid;
     const userDocRef = doc(db, "watched", userId);
 
     try {
-      // Verifica se o documento já existe
       const docSnap = await getDoc(userDocRef);
 
       if (!docSnap.exists()) {
-        // Se o documento não existir, cria um novo documento com um array vazio
         await setDoc(userDocRef, { movies: [] });
       }
 
-      // Adiciona ou atualiza o filme no array
-      const movieExists = docSnap.data().movies.some(movie => movie.id === movieData.id);
+      const movieExists = docSnap
+        .data()
+        .movies.some((movie) => movie.id === movieData.id);
 
       if (movieExists) {
-        // Atualiza o filme existente
         await updateDoc(userDocRef, {
-          movies: docSnap.data().movies.map(movie =>
-            movie.id === movieData.id ? { ...movie, watchedAt: movieData.watchedAt } : movie
-          )
+          movies: docSnap
+            .data()
+            .movies.map((movie) =>
+              movie.id === movieData.id
+                ? { ...movie, watchedAt: movieData.watchedAt }
+                : movie
+            ),
         });
       } else {
-        // Adiciona o novo filme
         await updateDoc(userDocRef, {
           movies: arrayUnion({
             id: movieData.id,
@@ -168,13 +165,80 @@ const addWatchedMovie = async (movieData) => {
             vote_average: movieData.vote_average,
             vote_count: movieData.vote_count,
             watchedAt: movieData.watchedAt,
-          })
+          }),
         });
       }
 
       console.log("Filme adicionado aos assistidos com sucesso.");
     } catch (error) {
       console.error("Erro ao adicionar filme aos assistidos:", error);
+    }
+  } else {
+    console.error("Usuário não autenticado");
+  }
+};
+
+const generateRecommendations = async () => {
+  if (auth.currentUser) {
+    const userId = auth.currentUser.uid;
+    try {
+      const response = await fetch(`http://localhost:5000/you/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        console.error('Erro na resposta da API:', await response.text());
+        return;
+      }
+
+      const data = await response.json();
+      console.log('Dados recebidos:', data);
+
+      // Verifique a estrutura dos dados recebidos
+      if (data && data.recommendations && Array.isArray(data.recommendations.recommendations)) {
+        console.log('Recomendações geradas:', data.recommendations.recommendations);
+        // Atualize o estado de recomendações, se necessário
+      } else {
+        console.error('Formato inesperado da resposta:', data);
+      }
+    } catch (error) {
+      console.error('Erro ao gerar recomendações:', error);
+    }
+  } else {
+    console.error('Usuário não autenticado');
+  }
+};
+
+
+
+
+const removeRecommendation = async (movieId) => {
+  if (auth.currentUser) {
+    const userId = auth.currentUser.uid;
+    const userDocRef = doc(db, "recommendations", userId);
+
+    try {
+      const docSnap = await getDoc(userDocRef);
+      if (!docSnap.exists()) {
+        console.error("Documento de recomendações não encontrado.");
+        return;
+      }
+
+      const data = docSnap.data();
+      const updatedRecommendations = data.recommendations.filter(
+        (movie) => movie.id !== movieId
+      );
+
+      await updateDoc(userDocRef, {
+        recommendations: updatedRecommendations,
+      });
+      console.log("Filme removido das recomendações com sucesso.");
+    } catch (error) {
+      console.error("Erro ao remover filme das recomendações:", error);
+      throw error;
     }
   } else {
     console.error("Usuário não autenticado");
@@ -196,4 +260,6 @@ export {
   addFavoriteMovie,
   removeFavoriteMovie,
   addWatchedMovie,
+  removeRecommendation,
+  generateRecommendations
 };

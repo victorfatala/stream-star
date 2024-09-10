@@ -64,9 +64,9 @@
 
 .fav-card-img {
  width: 100%;
- height: auto; /* Manter a proporção da imagem */
- max-height: 400px; /* Ajuste conforme necessário */
- object-fit: cover; /* Ajuste conforme necessário */
+ height: auto; 
+ max-height: 400px; 
+ object-fit: cover;
  border-radius: 4px;
  transition: opacity 0.3s;
 }

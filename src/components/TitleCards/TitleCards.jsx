@@ -11,13 +11,14 @@ const TitleCards = ({ title, category }) => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [favorites, setFavorites] = useState(new Set());
+  const [watched, setWatched] = useState(new Set());
   const cardsRef = useRef();
 
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWVlYzMzMmFjMTk4NjY0OTJhOTc2OGQ2YmRhZGUzNyIsIm5iZiI6MTcyNTkwMTU0OC42MzQ2MDEsInN1YiI6IjY2ZDg1YTk2NWNkZjI3OWZmNTE4Mjk2NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2bJB4RKuppWqERaQKkhtPx5QPLw3Rv1rj7ebhJ_AnHw",
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWVlYzMzMmFjMTk4NjY0OTJhOTc2OGQ2YmRhZGUzNyIsIm5iZiI6MTcyNTk3Mjg2MC43MDQxODUsInN1YiI6IjY2ZDg1YTk2NWNkZjI3OWZmNTE4Mjk2NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wYNRIXNrJZGiBvNbWG5My829ZeeLhh7kY5eOeON-7eQ",
     },
   };
 
@@ -62,7 +63,6 @@ const TitleCards = ({ title, category }) => {
       console.error("Usuário não autenticado");
     }
   };
-  
 
   const addToWatched = async (movieData) => {
     const userId = auth.currentUser ? auth.currentUser.uid : null;
@@ -94,15 +94,63 @@ const TitleCards = ({ title, category }) => {
   };
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${category ? category : "now_playing"}?language=pt-BR&page=1`,
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        setApiData(response.results || []);
-      })
-      .catch((err) => console.error("Erro ao buscar dados da API:", err));
+    if (category === 'favorites') {
+      const fetchFavorites = async () => {
+        if (auth.currentUser) {
+          const userId = auth.currentUser.uid;
+          try {
+            const docRef = doc(db, "favorites", userId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              const favoriteIds = new Set(data.movies.map(movie => movie.id));
+              setFavorites(favoriteIds);
+              setApiData(data.movies || []);
+            } else {
+              setFavorites(new Set());
+              setApiData([]);
+            }
+          } catch (error) {
+            console.error("Erro ao buscar favoritos:", error);
+          }
+        }
+      };
+
+      fetchFavorites();
+    } else if (category === 'watched') {
+      const fetchWatched = async () => {
+        if (auth.currentUser) {
+          const userId = auth.currentUser.uid;
+          try {
+            const docRef = doc(db, "watched", userId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              const watchedIds = new Set(data.movies.map(movie => movie.id));
+              setWatched(watchedIds);
+              setApiData(data.movies || []);
+            } else {
+              setWatched(new Set());
+              setApiData([]);
+            }
+          } catch (error) {
+            console.error("Erro ao buscar filmes assistidos:", error);
+          }
+        }
+      };
+
+      fetchWatched();
+    } else {
+      fetch(
+        `https://api.themoviedb.org/3/movie/${category ? category : "now_playing"}?language=pt-BR&page=1`,
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => {
+          setApiData(response.results || []);
+        })
+        .catch((err) => console.error("Erro ao buscar dados da API:", err));
+    }
   }, [category]);
 
   useEffect(() => {
@@ -118,59 +166,41 @@ const TitleCards = ({ title, category }) => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      if (auth.currentUser) {
-        const userId = auth.currentUser.uid;
-        try {
-          const docRef = doc(db, "favorites", userId);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            const favoriteIds = new Set(data.movies.map(movie => movie.id));
-            setFavorites(favoriteIds);
-          } else {
-            setFavorites(new Set());
-          }
-        } catch (error) {
-          console.error("Erro ao buscar favoritos:", error);
-        }
-      }
-    };
-  
-    fetchFavorites();
-  }, [auth.currentUser]);
-  
-
   return (
     <div className="title-cards">
       <h2>{title ? title : "Destaques"}</h2>
       <div className="card-list" ref={cardsRef}>
-        {apiData.map((card) => (
-          <div
-            className="card"
-            key={card.id}
-            onClick={() => handleCardClick(card)}
-          >
-            <img
-              src={`https://image.tmdb.org/t/p/w500${card.backdrop_path}`}
-              alt={card.original_title}
-            />
-            <p>{card.original_title}</p>
-            <button
-              className="favorite-button"
-              onClick={(e) => {
-                e.stopPropagation(); // Evita que o clique no botão também abra o modal
-                toggleFavorite(card);
-              }}
+        {apiData.length > 0 ? (
+          apiData.map((card) => (
+            <div
+              className="card"
+              key={card.id}
+              onClick={() => handleCardClick(card)}
             >
-              <FaStar
-                color={favorites.has(card.id) ? "gold" : "gray"}
-                size={30}
+              <img
+                src={`https://image.tmdb.org/t/p/w500${card.backdrop_path}`}
+                alt={card.original_title}
               />
-            </button>
-          </div>
-        ))}
+              <p>{card.original_title}</p>
+              {category !== 'watched' && (
+                <button
+                  className="favorite-button"
+                  onClick={(e) => {
+                    e.stopPropagation(); 
+                    toggleFavorite(card);
+                  }}
+                >
+                  <FaStar
+                    color={favorites.has(card.id) ? "gold" : "gray"}
+                    size={30}
+                  />
+                </button>
+              )}
+            </div>
+          ))
+        ) : (
+          <p>Nenhum filme aqui</p>
+        )}
       </div>
 
       {modalVisible && selectedMovie && (
@@ -179,31 +209,38 @@ const TitleCards = ({ title, category }) => {
             <span className="modal-close" onClick={closeModal}>
               ×
             </span>
-            <button
-              className="favorite-button"
-              onClick={() => toggleFavorite(selectedMovie)}
-            >
-              <FaStar
-                color={favorites.has(selectedMovie.id) ? "gold" : "gray"}
-                size={30}
-              />
-            </button>
+            {category !== 'watched' && (
+              <button
+                className="favorite-button"
+                onClick={() => toggleFavorite(selectedMovie)}
+              >
+                <FaStar
+                  color={favorites.has(selectedMovie.id) ? "gold" : "gray"}
+                  size={30}
+                />
+              </button>
+            )}
             <h2>{selectedMovie.original_title}</h2>
             <img
               src={`https://image.tmdb.org/t/p/w500${selectedMovie.backdrop_path}`}
               alt={selectedMovie.original_title}
             />
             <p>{selectedMovie.overview}</p>
-            <Link
-              to={`/player/${selectedMovie.id}`}
-              className="modal-button"
-              onClick={() => {
-                addToWatched(selectedMovie);
-                closeModal();
-              }}
-            >
-              Assistir
-            </Link>
+            {category !== 'watched' && (
+              <Link
+                to={`/player/${selectedMovie.id}`}
+                className="modal-button"
+                onClick={() => {
+                  addToWatched(selectedMovie);
+                  closeModal();
+                }}
+              >
+                Assistir
+              </Link>
+            )}
+            {category === 'watched' && (
+              <p>Você já assistiu a este filme.</p>
+            )}
           </div>
         </div>
       )}

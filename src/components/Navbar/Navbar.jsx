@@ -44,17 +44,37 @@ const Navbar = () => {
       <div className="navbar-left">
         <Link className="logo-link" to="/"><img src={logo}  alt="Logo" /></Link>
         <ul>
-          <li>
-            <button>Destaques</button>
+        <li>
+            {" "}
+            {user ? (
+              <Link to={`/high`}>Destaques</Link>
+            ) : (
+              <button>Destaques</button>
+            )}
           </li>
           <li>
-            <button>Recomendados para você</button>
+            {" "}
+            {user ? (
+              <Link to={`/you/${user.uid}`}>Recomendações para Você</Link>
+            ) : (
+              <button>Recomendações para Você</button>
+            )}
           </li>
           <li>
-            <button>Filmes</button>
+            {" "}
+            {user ? (
+              <Link to={`/movies`}>Filmes</Link>
+            ) : (
+              <button>Filmes</button>
+            )}
           </li>
           <li>
-            <button>Novo e Popular</button>
+            {" "}
+            {user ? (
+              <Link to={`/popular`}>Popular</Link>
+            ) : (
+              <button>Popular</button>
+            )}
           </li>
           <li>
             {" "}

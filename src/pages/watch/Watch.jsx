@@ -20,10 +20,10 @@ const Watch = () => {
           if (!auth.currentUser || auth.currentUser.uid !== uid) {
             throw new Error('Usuário não autenticado ou UID incorreto.');
           }
-
+  
           const userWatchedDocRef = doc(db, 'watched', uid);
           const userWatchedDoc = await getDoc(userWatchedDocRef);
-
+  
           if (userWatchedDoc.exists()) {
             const data = userWatchedDoc.data();
             setMovies(Array.isArray(data.movies) ? data.movies : []);
@@ -40,9 +40,10 @@ const Watch = () => {
         setLoading(false);
       }
     };
-
+  
     fetchWatchedMovies();
-  }, [uid]);
+  }, [uid]);  
+  
 
   const removeMovie = async (movieId) => {
     try {
