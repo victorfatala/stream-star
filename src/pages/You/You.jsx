@@ -1,56 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { getAuth } from 'firebase/auth'; // Importar getAuth
-import { generateRecommendations } from '../../firebase'; // Importe a função de gerar recomendações
+import React, { useState, useEffect } from "react";
+import { getAuth } from "firebase/auth";
+import { generateRecommendations } from "../../firebase";
+import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
+import "./You.css";
+import streamstar_spinner from "../../assets/streamstar_spinner.gif";
 
 const You = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState(null); // Adicione um estado para o userId
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // Função para buscar o ID do usuário autenticado
     const fetchUserId = async () => {
       try {
-        const auth = getAuth(); // Obtendo a instância de autenticação
-        const user = auth.currentUser; // Obtendo o usuário autenticado
+        const auth = getAuth();
+        const user = auth.currentUser;
         if (user) {
           setUserId(user.uid);
         } else {
-          console.error('Usuário não autenticado');
-          setError('Usuário não autenticado');
+          console.error("Usuário não autenticado");
+          setError("Usuário não autenticado");
         }
       } catch (err) {
-        console.error('Erro ao obter ID do usuário:', err);
-        setError('Erro ao obter ID do usuário');
+        console.error("Erro ao obter ID do usuário:", err);
+        setError("Erro ao obter ID do usuário");
       }
     };
 
     fetchUserId();
-  }, []); // Este useEffect é executado apenas uma vez
+  }, []);
 
   useEffect(() => {
-    if (!userId) return; // Não faz nada se userId não estiver definido
+    if (!userId) return;
 
     const fetchRecommendations = async () => {
       setLoading(true);
       setError(null);
       try {
-        // Gere as recomendações
         await generateRecommendations();
 
-        // Busque as recomendações geradas
         const response = await fetch(`http://localhost:5000/you/${userId}`, {
-          method: 'GET',
+          method: "GET",
         });
 
-        if (!response.ok) throw new Error('Falha na solicitação');
+        if (!response.ok) throw new Error("Falha na solicitação");
         const data = await response.json();
 
-        console.log('Dados recebidos:', data); // Adicione este log para depuração
+        console.log("Dados recebidos:", data);
 
-        // Acessa o array de recomendações
-        const recommendationsArray = data.recommendations?.recommendations || [];
+        const recommendationsArray =
+          data.recommendations?.recommendations || [];
         setRecommendations(recommendationsArray);
       } catch (error) {
         setError(error.message);
@@ -60,31 +61,46 @@ const You = () => {
     };
 
     fetchRecommendations();
-  }, [userId]); // Dependência em userId para garantir que o fetch só ocorra quando o ID estiver disponível
+  }, [userId]);
 
-  if (loading) return <p>Carregando recomendações...</p>;
-  if (error) return <p>Erro: {error}</p>;
+  if (loading)
+    return (
+      <div className="you-spinner">
+        <img src={streamstar_spinner} alt="loading" />
+        <p>
+          <span class="dot">.</span>
+          <span class="dot">.</span>
+          <span class="dot">.</span>
+        </p>
+      </div>
+    );
+  if (error) return <p className="you-error">Erro ao carregar: {error}</p>;
 
   return (
-    <div>
-      <h1>Recomendações</h1>
-      {recommendations.length > 0 ? (
-        <div>
-          {recommendations.map((movie) => (
-            <div key={movie.id} style={{ marginBottom: '20px' }}>
-              <h2>{movie.title}</h2>
+    <div className="you-container">
+      <Navbar />
+      <div className="you-hero">
+        <h2>Para Você</h2>
+      </div>
+      <div className="you-grid-container">
+        {recommendations.length > 0 ? (
+          recommendations.map((movie) => (
+            <div key={movie.id} className="you-grid-item">
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
-                style={{ width: '150px' }}
+                className="you-grid-item-img"
               />
-              <p>{movie.overview}</p>
+              <p className="you-grid-item-title">
+                {movie.title || "Título não disponível"}
+              </p>
             </div>
-          ))}
-        </div>
-      ) : (
-        <p>Nenhuma recomendação disponível.</p>
-      )}
+          ))
+        ) : (
+          <p>Nenhuma recomendação disponível.</p>
+        )}
+      </div>
+      <Footer />
     </div>
   );
 };

@@ -11,7 +11,7 @@ CORS(app)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../backend/credentials.json"
 
 db = firestore.Client()
-TMDB_API_KEY = "faeec332ac19866492a9768d6bdade37"  # Substitua pela sua chave API do TMDB
+TMDB_API_KEY = "faeec332ac19866492a9768d6bdade37" 
 
 def get_tmdb_movie_info(movie_id):
     """Obtém informações detalhadas sobre um filme usando a TMDB API."""
@@ -45,22 +45,19 @@ def fetch_top_rated_movies():
 
 def generate_recommendations_for_user(user_id):
     """Gera recomendações de filmes para o usuário, excluindo filmes assistidos."""
-    # Obter os filmes assistidos
     watched_response = requests.get(f"http://localhost:5000/watched/{user_id}")
     if watched_response.status_code == 200:
         watched_movies = watched_response.json().get("movies", [])
     else:
         watched_movies = []
 
-    # Lista de IDs dos filmes populares
     popular_movies = fetch_popular_movies()
     
-    # Exclui os IDs de filmes já assistidos da lista de possíveis recomendações
     watched_movie_ids = {movie['id'] for movie in watched_movies}
     available_movies = [movie for movie in popular_movies if movie['id'] not in watched_movie_ids]
 
     if len(available_movies) < 10:
-        available_movies = popular_movies  # Usar todos os filmes populares se não houver filmes suficientes disponíveis
+        available_movies = popular_movies 
     
     recommended_movies = random.sample(available_movies, min(10, len(available_movies)))
     

@@ -1,13 +1,12 @@
 import React from "react";
 import "./Home.css";
 import Navbar from "../../components/Navbar/Navbar";
-import hero_banner from "../../assets/hero_banner.jpg";
-import hero_title from "../../assets/hero_title.png";
 import logo from "../../assets/logo.png";
-import play_icon from "../../assets/play_icon.png";
 import info_icon from "../../assets/info_icon.png";
 import TitleCards from "../../components/TitleCards/TitleCards";
 import Footer from "../../components/Footer/Footer";
+import git_icon from "../../assets/github-brands-solid.svg";
+import pix_icon from "../../assets/pix-brands-solid.svg";
 
 const Home = () => {
   return (
@@ -18,30 +17,43 @@ const Home = () => {
         <div className="hero-caption">
           <img src={logo} alt="" className="caption-img" />
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            ornare, odio et commodo imperdiet, velit arcu laoreet eros, gravida
-            varius libero nibh in eros. Aenean gravida mi id risus ornare, ac
-            feugiat mauris lacinia.
+            Stream Star é um site de streaming de filmes e séries que oferece
+            uma vasta biblioteca de conteúdo audiovisual para os amantes de
+            cinema e TV. Com uma interface intuitiva e fácil de usar, o Stream
+            Star permite aos usuários explorar e assistir a uma ampla variedade
+            de filmes, desde os mais recentes lançamentos até clássicos
+            atemporais, além de séries de TV populares e exclusivas.
           </p>
           <div className="hero-btns">
             <button className="btn">
-              <img src={play_icon} alt="" />
-              Play
+            <img src={git_icon}/>
+              Github
             </button>
             <button className="btn dark-btn">
-              <img src={info_icon} alt="" />
-              More Info
+              <img src={pix_icon}/>
+              Apoiar
             </button>
           </div>
           <TitleCards />
         </div>
       </div>
       <div className="more-cards">
-        <TitleCards id="carousel-1" title={"Recomendados para você"} category={"now_playing"} />
         <TitleCards id="carousel-2" title={"Filmes"} category={"popular"} />
-        <TitleCards id="carousel-3" title={"Populares"} category={"top_rated"} />
-        <TitleCards id="carousel-4" title={"Meus Favoritos"} category={"favorites"} />
-        <TitleCards id="carousel-5" title={"Filmes Já Assistidos"} category={"watched"} />
+        <TitleCards
+          id="carousel-3"
+          title={"Populares"}
+          category={"top_rated"}
+        />
+        <TitleCards
+          id="carousel-4"
+          title={"Meus Favoritos"}
+          category={"favorites"}
+        />
+        <TitleCards
+          id="carousel-5"
+          title={"Filmes Já Assistidos"}
+          category={"watched"}
+        />
       </div>
       <Footer />
     </div>
