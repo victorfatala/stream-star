@@ -37,7 +37,7 @@
 
 .you-spinner .dot {
  font-size: 2rem; 
- color: #fff; /* Cor dos pontos */
+ color: #fff;
  animation: dotFlashing 1.5s infinite linear;
 }
 
@@ -53,7 +53,6 @@
  }
 }
 
-/* Animação para os pontos em sequência */
 .you-spinner .dot:nth-child(1) {
  animation-delay: 0s;
 }
@@ -71,7 +70,7 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   padding: 20px 6%;
-  justify-items: center; /* Alinha os itens ao centro */
+  justify-items: center;
 }
 
 .you-grid-item {
@@ -117,7 +116,6 @@
   margin-top: 20px;
 }
 
-/* Keyframe animations */
 @keyframes fadeIn {
   from {
     opacity: 0;

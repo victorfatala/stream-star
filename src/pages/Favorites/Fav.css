@@ -34,15 +34,14 @@
  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
  gap: 20px;
  padding: 20px 6%;
- justify-items: center; /* Alinha os itens ao centro */
+ justify-items: center;
 }
 
-/* Adiciona um estilo especial quando há apenas um item */
 .fav-cards-container:only-child {
  display: flex;
  justify-content: center;
  align-items: center;
- min-height: 200px; /* Ajuste conforme necessário */
+ min-height: 200px;
 }
 
 .fav-card {
@@ -124,7 +123,6 @@
  }
 }
 
-/* Keyframe animations */
 @keyframes fadeIn {
  from {
    opacity: 0;

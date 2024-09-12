@@ -37,7 +37,6 @@ const Top = () => {
       const userId = auth.currentUser.uid;
       try {
         if (favorites.has(movie.id)) {
-          // Remove dos favoritos
           await removeFavoriteMovie(movie.id);
           setFavorites(prevFavorites => {
             const newFavorites = new Set(prevFavorites);
@@ -45,7 +44,6 @@ const Top = () => {
             return newFavorites;
           });
         } else {
-          // Adiciona aos favoritos
           await addFavoriteMovie(movie);
           setFavorites(prevFavorites => new Set(prevFavorites).add(movie.id));
         }

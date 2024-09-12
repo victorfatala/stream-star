@@ -16,12 +16,7 @@
 }
 .card-list img {
   cursor: pointer;
-  /* position: relative;
-  display: inline-block; */
   width: 240px;
-  /* margin-right: 10px;
-  transition: all 0.4s ease;
-  transition-delay: 0s; */
   border-radius: 4px;
 }
 .card-list .card {

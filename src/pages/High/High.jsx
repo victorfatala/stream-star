@@ -18,7 +18,7 @@ const High = () => {
   const fetchHighlights = async () => {
     try {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/now_playing?language=pt-BR&page=1`, // Endpoint para filmes em destaque
+        `https://api.themoviedb.org/3/movie/now_playing?language=pt-BR&page=1`,
         {
           headers: {
             accept: "application/json",
@@ -37,7 +37,6 @@ const High = () => {
       const userId = auth.currentUser.uid;
       try {
         if (favorites.has(movie.id)) {
-          // Remove dos favoritos
           await removeFavoriteMovie(movie.id);
           setFavorites(prevFavorites => {
             const newFavorites = new Set(prevFavorites);
@@ -45,7 +44,6 @@ const High = () => {
             return newFavorites;
           });
         } else {
-          // Adiciona aos favoritos
           await addFavoriteMovie(movie);
           setFavorites(prevFavorites => new Set(prevFavorites).add(movie.id));
         }

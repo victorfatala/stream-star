@@ -197,10 +197,8 @@ const generateRecommendations = async () => {
       const data = await response.json();
       console.log('Dados recebidos:', data);
 
-      // Verifique a estrutura dos dados recebidos
       if (data && data.recommendations && Array.isArray(data.recommendations.recommendations)) {
         console.log('Recomendações geradas:', data.recommendations.recommendations);
-        // Atualize o estado de recomendações, se necessário
       } else {
         console.error('Formato inesperado da resposta:', data);
       }

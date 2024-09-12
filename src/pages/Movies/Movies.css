@@ -3,19 +3,18 @@
  background-color: #000;
  color: #fff;
  padding: 0 20px;
- margin-bottom: 80px; /* Ajuste para a altura do Footer */
+ margin-bottom: 80px;
 }
 
 .movies-hero {
- /* Certifique-se de que há um espaçamento suficiente para o título não colidir com a navbar */
- padding-top: 80px; /* Ajuste conforme necessário */
+ padding-top: 80px; 
 }
 
 .movies-hero h2 {
  display: flex;
  justify-content: center;
- margin-top: 0; /* Remover qualquer margem superior extra */
- margin-bottom: 20px; /* Ajuste conforme necessário */
+ margin-top: 0; 
+ margin-bottom: 20px;
  font-size: 2.5em;
  color: #fff;
  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -27,15 +26,14 @@
  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
  gap: 20px;
  padding: 20px 6%;
- justify-items: center; /* Alinha os itens ao centro */
+ justify-items: center;
 }
 
-/* Adiciona um estilo especial quando há apenas um item */
 .movies-grid-container:only-child {
  display: flex;
  justify-content: center;
  align-items: center;
- min-height: 200px; /* Ajuste conforme necessário */
+ min-height: 200px; 
 }
 
 .movies-grid-item {
@@ -155,7 +153,6 @@
  }
 }
 
-/* Keyframe animations */
 @keyframes fadeIn {
  from {
    opacity: 0;

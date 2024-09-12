@@ -22,7 +22,7 @@ const Movies = () => {
         {
           headers: {
             accept: "application/json",
-            Authorization: "Bearer YOUR_API_KEY_HERE",
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWVlYzMzMmFjMTk4NjY0OTJhOTc2OGQ2YmRhZGUzNyIsIm5iZiI6MTcyNjE0Mzk0NS4wMjgxMDUsInN1YiI6IjY2ZDg1YTk2NWNkZjI3OWZmNTE4Mjk2NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KHf4DkN0bqTxHPAj7Pyz0Ljrm5I6jxIUSCPOxX54IK0",
           },
         }
       );
@@ -37,7 +37,6 @@ const Movies = () => {
       const userId = auth.currentUser.uid;
       try {
         if (favorites.has(movie.id)) {
-          // Remove dos favoritos
           await removeFavoriteMovie(movie.id);
           setFavorites(prevFavorites => {
             const newFavorites = new Set(prevFavorites);
@@ -45,7 +44,6 @@ const Movies = () => {
             return newFavorites;
           });
         } else {
-          // Adiciona aos favoritos
           await addFavoriteMovie(movie);
           setFavorites(prevFavorites => new Set(prevFavorites).add(movie.id));
         }
