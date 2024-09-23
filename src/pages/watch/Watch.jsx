@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Navbar from '../../components/Navbar/Navbar';
-import Footer from '../../components/Footer/Footer';
-import { doc, getDoc, updateDoc, arrayRemove } from 'firebase/firestore';
-import { db, auth } from '../../firebase';
-import './Watch.css';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
+import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
+import { db, auth } from "../../firebase";
+import "./Watch.css";
 import { AiOutlineClose } from "react-icons/ai";
 
 const Watch = () => {
@@ -18,12 +18,12 @@ const Watch = () => {
       try {
         if (uid) {
           if (!auth.currentUser || auth.currentUser.uid !== uid) {
-            throw new Error('Usuário não autenticado ou UID incorreto.');
+            throw new Error("Usuário não autenticado ou UID incorreto.");
           }
-  
-          const userWatchedDocRef = doc(db, 'watched', uid);
+
+          const userWatchedDocRef = doc(db, "watched", uid);
           const userWatchedDoc = await getDoc(userWatchedDocRef);
-  
+
           if (userWatchedDoc.exists()) {
             const data = userWatchedDoc.data();
             setMovies(Array.isArray(data.movies) ? data.movies : []);
@@ -31,32 +31,31 @@ const Watch = () => {
             setMovies([]);
           }
         } else {
-          console.log('UID não encontrado.');
+          console.log("UID não encontrado.");
         }
       } catch (error) {
-        console.error('Erro ao buscar filmes assistidos:', error);
-        setError('Erro ao buscar filmes assistidos.');
+        console.error("Erro ao buscar filmes assistidos:", error);
+        setError("Erro ao buscar filmes assistidos.");
       } finally {
         setLoading(false);
       }
     };
-  
+
     fetchWatchedMovies();
-  }, [uid]);  
-  
+  }, [uid]);
 
   const removeMovie = async (movieId) => {
     try {
-      const userWatchedDocRef = doc(db, 'watched', uid);
+      const userWatchedDocRef = doc(db, "watched", uid);
 
       await updateDoc(userWatchedDocRef, {
-        movies: arrayRemove(movies.find(movie => movie.id === movieId))
+        movies: arrayRemove(movies.find((movie) => movie.id === movieId)),
       });
 
-      setMovies(movies.filter(movie => movie.id !== movieId));
+      setMovies(movies.filter((movie) => movie.id !== movieId));
     } catch (error) {
-      console.error('Erro ao remover filme assistido:', error);
-      setError('Erro ao remover filme assistido.');
+      console.error("Erro ao remover filme assistido:", error);
+      setError("Erro ao remover filme assistido.");
     }
   };
 
@@ -83,11 +82,19 @@ const Watch = () => {
                     alt={movie.title}
                     className="watch-card-img"
                   />
-                  <p className="watch-card-title">{movie.title || 'Título não disponível'}</p>
-                  <p className="watch-card-date">
-                    Assistido em: {movie.watchedAt ? new Date(movie.watchedAt).toLocaleDateString() : 'Data não disponível'}
+                  <p className="watch-card-title">
+                    {movie.title || "Título não disponível"}
                   </p>
-                  <button className="watch-remove-btn" onClick={() => removeMovie(movie.id)}>
+                  <p className="watch-card-date">
+                    Assistido em:{" "}
+                    {movie.watchedAt
+                      ? new Date(movie.watchedAt).toLocaleDateString()
+                      : "Data não disponível"}
+                  </p>
+                  <button
+                    className="watch-remove-btn"
+                    onClick={() => removeMovie(movie.id)}
+                  >
                     <AiOutlineClose />
                   </button>
                 </div>

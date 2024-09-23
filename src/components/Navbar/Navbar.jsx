@@ -39,59 +39,67 @@ const Navbar = () => {
     });
   };
 
+  const menuItems = () => {
+    return (
+      <ul>
+        <li>
+          {" "}
+          {user ? (
+            <Link to={`/high`}>Destaques</Link>
+          ) : (
+            <button>Destaques</button>
+          )}
+        </li>
+        <li>
+          {" "}
+          {user ? (
+            <Link to={`/you/${user.uid}`}>Recomendações para Você</Link>
+          ) : (
+            <button>Recomendações para Você</button>
+          )}
+        </li>
+        <li>
+          {" "}
+          {user ? <Link to={`/movies`}>Filmes</Link> : <button>Filmes</button>}
+        </li>
+        <li>
+          {" "}
+          {user ? (
+            <Link to={`/popular`}>Popular</Link>
+          ) : (
+            <button>Popular</button>
+          )}
+        </li>
+        <li>
+          {" "}
+          {user ? (
+            <Link to={`/favorites/${user.uid}`}>Meus Favoritos</Link>
+          ) : (
+            <button>Meus Favoritos</button>
+          )}
+        </li>
+        <li>
+          {user ? (
+            <Link to={`/watched/${user.uid}`}>Filmes Assistidos</Link>
+          ) : (
+            <button>Filmes Assistidos</button>
+          )}
+        </li>
+      </ul>
+    );
+  };
+
   return (
     <div ref={navRef} className={navbar ? "navbar active" : "navbar"}>
       <div className="navbar-left">
-        <Link className="logo-link" to="/"><img src={logo}  alt="Logo" /></Link>
-        <ul>
-        <li>
-            {" "}
-            {user ? (
-              <Link to={`/high`}>Destaques</Link>
-            ) : (
-              <button>Destaques</button>
-            )}
-          </li>
-          <li>
-            {" "}
-            {user ? (
-              <Link to={`/you/${user.uid}`}>Recomendações para Você</Link>
-            ) : (
-              <button>Recomendações para Você</button>
-            )}
-          </li>
-          <li>
-            {" "}
-            {user ? (
-              <Link to={`/movies`}>Filmes</Link>
-            ) : (
-              <button>Filmes</button>
-            )}
-          </li>
-          <li>
-            {" "}
-            {user ? (
-              <Link to={`/popular`}>Popular</Link>
-            ) : (
-              <button>Popular</button>
-            )}
-          </li>
-          <li>
-            {" "}
-            {user ? (
-              <Link to={`/favorites/${user.uid}`}>Meus Favoritos</Link>
-            ) : (
-              <button>Meus Favoritos</button>
-            )}
-          </li>
-          <li>
-            {user ? (
-              <Link to={`/watched/${user.uid}`}>Filmes Assistidos</Link>
-            ) : (
-              <button>Filmes Assistidos</button>
-            )}
-          </li>
-        </ul>
+        <Link className="logo-link" to="/">
+          <img src={logo} alt="Logo" />
+        </Link>
+        <div className="menu">
+          <span class="material-icons">menu</span>
+          <div className="menu-dropdown">{menuItems()}</div>
+        </div>
+        {menuItems()}
       </div>
       <div className="navbar-right">
         <button>

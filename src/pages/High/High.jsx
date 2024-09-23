@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./High.css";
 import { auth, addFavoriteMovie, removeFavoriteMovie } from "../../firebase";
-import { db, doc, getDoc } from '../../firebase';
+import { db, doc, getDoc } from "../../firebase";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import Navbar from "../../components/Navbar/Navbar";
@@ -22,7 +22,8 @@ const High = () => {
         {
           headers: {
             accept: "application/json",
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWVlYzMzMmFjMTk4NjY0OTJhOTc2OGQ2YmRhZGUzNyIsIm5iZiI6MTcyNTk3Mjg2MC43MDQxODUsInN1YiI6IjY2ZDg1YTk2NWNkZjI3OWZmNTE4Mjk2NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wYNRIXNrJZGiBvNbWG5My829ZeeLhh7kY5eOeON-7eQ", // Substitua pelo seu token de API
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWVlYzMzMmFjMTk4NjY0OTJhOTc2OGQ2YmRhZGUzNyIsIm5iZiI6MTcyNTk3Mjg2MC43MDQxODUsInN1YiI6IjY2ZDg1YTk2NWNkZjI3OWZmNTE4Mjk2NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wYNRIXNrJZGiBvNbWG5My829ZeeLhh7kY5eOeON-7eQ", // Substitua pelo seu token de API
           },
         }
       );
@@ -38,14 +39,14 @@ const High = () => {
       try {
         if (favorites.has(movie.id)) {
           await removeFavoriteMovie(movie.id);
-          setFavorites(prevFavorites => {
+          setFavorites((prevFavorites) => {
             const newFavorites = new Set(prevFavorites);
             newFavorites.delete(movie.id);
             return newFavorites;
           });
         } else {
           await addFavoriteMovie(movie);
-          setFavorites(prevFavorites => new Set(prevFavorites).add(movie.id));
+          setFavorites((prevFavorites) => new Set(prevFavorites).add(movie.id));
         }
       } catch (error) {
         console.error("Erro ao atualizar favoritos:", error);
@@ -73,14 +74,21 @@ const High = () => {
 
     try {
       const updatedMovieData = { ...movieData, watchedAt };
-      const response = await axios.post(`http://localhost:5000/watched/${userId}`, updatedMovieData, {
-        headers: {
-          'Content-Type': 'application/json'
+      const response = await axios.post(
+        `http://localhost:5000/watched/${userId}`,
+        updatedMovieData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
       console.log("Resposta do backend:", response.data);
     } catch (error) {
-      console.error("Erro ao adicionar filme aos assistidos:", error.response ? error.response.data : error.message);
+      console.error(
+        "Erro ao adicionar filme aos assistidos:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
@@ -93,7 +101,7 @@ const High = () => {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
-            const favoriteIds = new Set(data.movies.map(movie => movie.id));
+            const favoriteIds = new Set(data.movies.map((movie) => movie.id));
             setFavorites(favoriteIds);
           } else {
             setFavorites(new Set());
@@ -112,7 +120,7 @@ const High = () => {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
-            const watchedIds = new Set(data.movies.map(movie => movie.id));
+            const watchedIds = new Set(data.movies.map((movie) => movie.id));
             setWatched(watchedIds);
           } else {
             setWatched(new Set());
@@ -188,7 +196,10 @@ const High = () => {
                 size={30}
               />
             </button>
-            <span className="highlights-modal-close-button" onClick={closeModal}>
+            <span
+              className="highlights-modal-close-button"
+              onClick={closeModal}
+            >
               ×
             </span>
             <h2>{selectedHighlight.original_title}</h2>

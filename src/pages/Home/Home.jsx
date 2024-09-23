@@ -25,16 +25,20 @@ const Home = () => {
             atemporais, além de séries de TV populares e exclusivas.
           </p>
           <div className="hero-btns">
-            <button className="btn">
-            <img src={git_icon}/>
-              Github
-            </button>
+            <a target="_blank" href="https://github.com/vifatala/movies-page">
+              <button className="btn">
+                <img src={git_icon} />
+                Github
+              </button>
+            </a>
             <button className="btn dark-btn">
-              <img src={pix_icon}/>
+              <img src={pix_icon} />
               Apoiar
             </button>
           </div>
-          <TitleCards />
+          <div className="first-cards">
+            <TitleCards />
+          </div>
         </div>
       </div>
       <div className="more-cards">

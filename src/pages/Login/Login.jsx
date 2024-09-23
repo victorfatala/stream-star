@@ -30,10 +30,11 @@ const Login = () => {
     navigate("/");
   };
 
-  return (
-    loading?<div className="login-spinner">
+  return loading ? (
+    <div className="login-spinner">
       <img src={streamstar_spinner} alt="" />
-    </div>:
+    </div>
+  ) : (
     <div className="login">
       <img src={logo} className="login-logo" onClick={() => {}} />
       <div className="login-form">
@@ -75,7 +76,6 @@ const Login = () => {
               <input type="checkbox" />
               <label>Lembre-se de mim</label>
             </div>
-            <p>Precisa de ajuda?</p>
           </div>
         </form>
         <div className="form-switch">

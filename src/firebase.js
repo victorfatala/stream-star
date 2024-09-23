@@ -30,6 +30,25 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+const getLoginInputErrorMessage = (error) => {
+  switch (error.code) {
+    case "auth/missing-email":
+      toast.error("Precisa de um e-mail");
+      break;
+    case "auth/invalid-email":
+      toast.error("E-mail inválido");
+      break;
+    case "auth/email-already-in-use":
+      toast.error("E-mail já está em uso");
+      break;
+    case "auth/missing-password":
+      toast.error("Precisa de uma senha");
+      break;
+    default:
+      toast.error(error.code.split("/")[1].split("-").join(" "));
+  }
+};
+
 const signup = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -46,7 +65,7 @@ const signup = async (name, email, password) => {
     toast.success("Usuário criado com sucesso!");
   } catch (error) {
     console.error(error);
-    toast.error(error.code.split("/")[1].split("-").join(" "));
+    getLoginInputErrorMessage(error);
   }
 };
 
@@ -56,7 +75,7 @@ const login = async (email, password) => {
     console.log(auth);
   } catch (error) {
     console.error(error);
-    toast.error(error.code.split("/")[1].split("-").join(" "));
+    getLoginInputErrorMessage(error);
   }
 };
 
@@ -183,35 +202,39 @@ const generateRecommendations = async () => {
     const userId = auth.currentUser.uid;
     try {
       const response = await fetch(`http://localhost:5000/you/${userId}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
-        console.error('Erro na resposta da API:', await response.text());
+        console.error("Erro na resposta da API:", await response.text());
         return;
       }
 
       const data = await response.json();
-      console.log('Dados recebidos:', data);
+      console.log("Dados recebidos:", data);
 
-      if (data && data.recommendations && Array.isArray(data.recommendations.recommendations)) {
-        console.log('Recomendações geradas:', data.recommendations.recommendations);
+      if (
+        data &&
+        data.recommendations &&
+        Array.isArray(data.recommendations.recommendations)
+      ) {
+        console.log(
+          "Recomendações geradas:",
+          data.recommendations.recommendations
+        );
       } else {
-        console.error('Formato inesperado da resposta:', data);
+        console.error("Formato inesperado da resposta:", data);
       }
     } catch (error) {
-      console.error('Erro ao gerar recomendações:', error);
+      console.error("Erro ao gerar recomendações:", error);
     }
   } else {
-    console.error('Usuário não autenticado');
+    console.error("Usuário não autenticado");
   }
 };
-
-
-
 
 const removeRecommendation = async (movieId) => {
   if (auth.currentUser) {
@@ -259,5 +282,5 @@ export {
   removeFavoriteMovie,
   addWatchedMovie,
   removeRecommendation,
-  generateRecommendations
+  generateRecommendations,
 };
