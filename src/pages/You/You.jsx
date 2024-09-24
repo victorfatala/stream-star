@@ -85,12 +85,14 @@ const You = () => {
       <div className="you-grid-container">
         {recommendations.length > 0 ? (
           recommendations.map((movie) => (
-            <div key={movie.id} className="you-grid-item">
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
-                className="you-grid-item-img"
-              />
+            <div className="you-grid-item-container">
+              <div key={movie.id} className="you-grid-item">
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                  className="you-grid-item-img"
+                />
+              </div>
               <p className="you-grid-item-title">
                 {movie.title || "Título não disponível"}
               </p>

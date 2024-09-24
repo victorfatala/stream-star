@@ -35,6 +35,8 @@ const Player = () => {
       .catch((err) => console.error(err));
   });
 
+  console.log("apiData: ", apiData);
+
   return (
     <div className="player">
       <img
@@ -45,8 +47,8 @@ const Player = () => {
         }}
       />
       <iframe
-        width="90%"
-        height="90%"
+        width="80%"
+        height="80%"
         src={`https://www.youtube.com/embed/${apiData.key}`}
         title="trailer"
         frameBorder="0"
