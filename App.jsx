@@ -6,38 +6,40 @@ import Player from "./pages/Player/Player";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import Watch from './pages/watch/Watch';
-import Fav from './pages/Favorites/Fav';
+import "react-toastify/dist/ReactToastify.css";
+import Watch from "./pages/watch/Watch";
+import Fav from "./pages/Favorites/Fav";
 
 const App = () => {
-
-
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    onAuthStateChanged(auth, async(user)=>{
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
-        navigate('/');
-      }else{
-        navigate('/login');
+        navigate("/");
+      } else {
+        navigate("/login");
       }
-    })
-  },[])
+    });
+  }, []);
 
   return (
     <div>
-      <ToastContainer theme="dark"/>
+      <ToastContainer theme="dark" />
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet"
       />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/player/:id" element={<Player/>}></Route>
-        <Route path="/watched/:uid" element={<Watch/>}></Route>
-        <Route path="/favorites/:uid" element={<Fav/>}></Route>
+        <Route path="/player/:id" element={<Player />}></Route>
+        <Route path="/watched/:uid" element={<Watch />}></Route>
+        <Route path="/favorites/:uid" element={<Fav />}></Route>
       </Routes>
     </div>
   );

@@ -5,7 +5,7 @@ import Footer from "../../components/Footer/Footer";
 import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import "./Watch.css";
-import { AiOutlineClose } from "react-icons/ai";
+import MoviesContainer from "../../components/MoviesContainer/MoviesContainer";
 
 const Watch = () => {
   const { uid } = useParams();
@@ -68,43 +68,17 @@ const Watch = () => {
   }
 
   return (
-    <div className="watch">
+    <div className="watch-container">
       <Navbar />
       <div className="watch-hero">
-        <div className="watch-hero-caption">
           <h2>Filmes Assistidos</h2>
-          <div className="watch-cards-container">
-            {movies.length > 0 ? (
-              movies.map((movie) => (
-                <div key={movie.id} className="watch-card">
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={movie.title}
-                    className="watch-card-img"
-                  />
-                  <p className="watch-card-title">
-                    {movie.title || "Título não disponível"}
-                  </p>
-                  <p className="watch-card-date">
-                    Assistido em:{" "}
-                    {movie.watchedAt
-                      ? new Date(movie.watchedAt).toLocaleDateString()
-                      : "Data não disponível"}
-                  </p>
-                  <button
-                    className="watch-remove-btn"
-                    onClick={() => removeMovie(movie.id)}
-                  >
-                    <AiOutlineClose />
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p>Nenhum filme assistido encontrado.</p>
-            )}
-          </div>
-        </div>
       </div>
+      <MoviesContainer
+        movies={movies}
+        removeFromList={removeMovie}
+        noMoviesMessage={"Nenhum filme assistido."}
+        displayWatchedDate={true}
+      />
       <Footer />
     </div>
   );

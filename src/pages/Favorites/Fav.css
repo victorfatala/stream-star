@@ -1,144 +1,87 @@
 .fav {
- font-family: Arial, sans-serif;
- background-color: #000;
- color: #fff;
+  background-color: #000;
+  color: #fff;
 }
 
 .fav-hero {
- position: relative;
- padding-top: 70px; 
+  position: relative;
+  padding-top: 150px;
+}
+
+.fav-hero h2 {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 2.5em;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  animation: fadeIn 1s ease-out;
 }
 
 .fav-banner-img {
- width: 100%;
- mask-image: linear-gradient(to right, transparent, black 75%);
- -webkit-mask-image: linear-gradient(to right, transparent, black 75%);
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, black 75%);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 75%);
 }
 
 .fav-hero-caption {
- width: 100%;
- padding: 20px 6%;
- display: flex;
- justify-content: center;
+  width: 100%;
 }
 
 .fav-hero-caption h2 {
- font-size: 2.5em;
- color: #fff;
- text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
- animation: fadeIn 1s ease-out;
+  display: flex;
+  justify-content: center;
+  font-size: 2.5em;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  margin-bottom: 20px;
 }
 
-.fav-cards-container {
- display: grid;
- grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
- gap: 20px;
- padding: 20px 6%;
- justify-items: center;
-}
-
-.fav-cards-container:only-child {
- display: flex;
- justify-content: center;
- align-items: center;
- min-height: 200px;
-}
-
-.fav-card {
- cursor: pointer;
- background: #333;
- border-radius: 10px;
- box-shadow: 0 4px 8px rgba(123, 122, 122, 0.3);
- padding: 15px;
- text-align: center;
- position: relative;
- transition: transform 0.3s, box-shadow 0.3s;
- animation: slideUp 0.5s ease-out;
-}
-
-.fav-card:hover {
- transform: scale(1.05);
- box-shadow: 0 8px 16px rgba(123, 122, 122, 0.5);
-}
-
-.fav-card-img {
- width: 100%;
- height: auto; 
- max-height: 400px; 
- object-fit: cover;
- border-radius: 4px;
- transition: opacity 0.3s;
-}
-
-.fav-card-title {
- margin-top: 10px;
- font-size: 14px;
-}
-
-.fav-remove-btn {
- position: absolute;
- top: 10px;
- right: 10px;
- background: transparent;
- border: none;
- cursor: pointer;
- transition: opacity 0.3s;
-}
-
-.fav-remove-btn {
- font-size: 40px;
- background-color: #333;
- color: red;
- border-radius: 10px;
- transition: .5s ease-in-out;
-}
-
-.fav-remove-btn:hover {
-   background-color: red;
-   color: #333;
-   transition: .5s ease-in-out;
-}
-
-.fav-loading, .fav-error {
- text-align: center;
- font-size: 1.2em;
- margin-top: 20px;
+.fav-loading,
+.fav-error {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 20px;
 }
 
 @media (max-width: 1024px) {
- .fav-hero-caption h2 {
-   font-size: 2em;
- }
+  .fav-hero-caption h2 {
+    font-size: 2em;
+  }
 }
 
 @media (max-width: 800px) {
- .fav-cards-container {
-   padding: 20px 4%;
- }
+  .fav-hero-caption h2 {
+    font-size: 1.5em;
+  }
+  .fav-cards-container {
+    padding: 20px 4%;
+  }
 }
 
 @media (max-width: 500px) {
- .fav-card {
-   padding: 10px;
- }
+  .fav-card {
+    padding: 10px;
+  }
 }
 
 @keyframes fadeIn {
- from {
-   opacity: 0;
- }
- to {
-   opacity: 1;
- }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
- from {
-   transform: translateY(20px);
-   opacity: 0;
- }
- to {
-   transform: translateY(0);
-   opacity: 1;
- }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

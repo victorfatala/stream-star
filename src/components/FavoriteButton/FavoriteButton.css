@@ -1,0 +1,20 @@
+.favorite-button {
+    font-family: "Varela Round", sans-serif;
+    background: none;
+    border: none;
+    cursor: pointer;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .star-icon {
+    transition: 0.3s;
+  }
+  
+  .star-icon:hover {
+    transition: 0.3s;
+    transform: scale(1.2);
+  }

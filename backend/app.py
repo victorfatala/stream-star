@@ -66,6 +66,7 @@ def generate_recommendations_for_user(user_id):
         recommendations.append({
             'id': movie['id'],
             'title': movie['title'],
+            'backdrop_path': movie.get('backdrop_path', ''),
             'poster_path': movie.get('poster_path', ''),
             'overview': movie.get('overview', ''),
         })

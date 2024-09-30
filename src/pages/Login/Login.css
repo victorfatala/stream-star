@@ -95,15 +95,15 @@
 .form-switch span:hover {
   text-decoration: underline;
 }
-.login-spinner{
+.login-spinner {
   width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.login-spinner img{
-  width: 60px;
+.login-spinner img {
+  width: 23rem;
 }
 @media (max-width: 500px) {
   .login {

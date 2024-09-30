@@ -1,5 +1,6 @@
 # USC Movies Page 🎥
-This is a Movies Page project for UNISAGRADO Computer Science course! 🤖
+
+This is StreamStar ⭐, a Movies Page project for UNISAGRADO Computer Science course! 🤖
 
 In this responsive web development study we aimed to create a Netflix-like web page where users can:
 
@@ -12,3 +13,17 @@ Front-end was developed with React ✨ & Back-end was developed with Python 🐍
 For storage we used Google's Firebase 🔥
 
 Hope you enjoy!
+
+# Instructions 📜
+
+Start Firestore Emulator 🔥:
+
+- cd backend
+- pip install Flask google-cloud-firestore Flask-CORS requests
+- python app.py
+
+Start React.js ✨:
+
+- make sure you are on the project root folder
+- npm i
+- npm run dev

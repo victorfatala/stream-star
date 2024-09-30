@@ -1,130 +1,44 @@
-.watch {
-  font-family: Arial, sans-serif;
+.watch-container {
   background-color: #000;
   color: #fff;
+  padding: 0 20px;
+  margin-bottom: 80px;
 }
 
 .watch-hero {
-  position: relative;
-  padding-top: 70px;
+  padding-top: 150px;
 }
 
-.watch-banner-img {
-  width: 100%;
-  mask-image: linear-gradient(to right, transparent, black 75%);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 75%);
-}
-
-.watch-hero-caption {
-  width: 100%;
-  padding: 20px 6%;
-}
-
-.watch-hero-caption h2 {
+.watch-hero h2 {
   display: flex;
   justify-content: center;
+  margin-top: 0;
+  margin-bottom: 20px;
   font-size: 2.5em;
   color: #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  margin-bottom: 20px;
+  animation: fadeIn 1s ease-out;
 }
 
-.watch-cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px 6%;
-}
-
-.watch-cards-container:only-child {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-}
-
-.watch-card {
-  cursor: pointer;
-  background: #333;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(123, 122, 122, 0.3);
-  padding: 15px;
-  text-align: center;
-  position: relative;
-  transition: transform 0.3s, box-shadow 0.3s;
-  animation: slideUp 0.5s ease-out;
-}
-
-.watch-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(123, 122, 122, 0.5);
-}
-
-.watch-card-img {
-  width: 100%;
-  height: auto;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 4px;
-  transition: opacity 0.3s;
-}
-
-.watch-card-title {
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.watch-card-date {
-  font-size: 12px;
-  color: #aaa;
-}
-
-.watch-remove-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.3s;
-}
-
-.watch-remove-btn {
-  font-size: 40px;
-  background-color: #333;
-  color: red;
-  border-radius: 10px;
-  transition: 0.5s ease-in-out;
-}
-
-.watch-remove-btn:hover {
-  background-color: red;
-  color: #333;
-  transition: 0.5s ease-in-out;
-}
-
-.watch-loading,
-.watch-error {
-  text-align: center;
-  font-size: 1.2em;
-  margin-top: 20px;
-}
-
+/* Responsividade */
 @media (max-width: 1024px) {
-  .watch-hero-caption h2 {
+  .watch-container h2 {
     font-size: 2em;
   }
 }
 
-@media (max-width: 800px) {
-  .watch-card {
-    padding: 10px;
+@media (max-width: 500px) {
+  .watch-container h2 {
+    font-size: 1.5em;
   }
 }
 
-@media (max-width: 500px) {
-  .watch-card {
-    padding: 8px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

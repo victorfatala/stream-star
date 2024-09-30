@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 body {
-  background: black;
+  background: #030303;
   color: white;
   font-family: "Varela Round", sans-serif;
 }
@@ -52,4 +52,23 @@ button {
   background: #c285ff;
   box-shadow: 0 0 35px #c285ff;
   color: black;
+}
+.root-container {
+  font-family: "Varela Round", sans-serif; /* Apply to the root container */
+}
+
+.react-search-box {
+  font-family: "Varela Round", sans-serif; /* Apply to the search box */
+}
+
+.modal {
+  font-family: "Varela Round", sans-serif; /* Apply to modals or other elements as needed */
+}
+
+.react-search-box-dropdown-list-item {
+  color: #030303;
+  background-color: aqua;
+}
+.bncmtB {
+  background-color: aqua;
 }

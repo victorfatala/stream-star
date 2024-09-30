@@ -4,7 +4,7 @@ import Footer from "../../components/Footer/Footer";
 import { db, doc, getDoc, updateDoc, arrayRemove } from "../../firebase";
 import { auth } from "../../firebase";
 import "./Fav.css";
-import { AiOutlineClose } from "react-icons/ai";
+import MoviesContainer from "../../components/MoviesContainer/MoviesContainer";
 
 const Fav = () => {
   const [movies, setMovies] = useState([]);
@@ -70,31 +70,12 @@ const Fav = () => {
         <div className="fav-hero-caption">
           <h2>Favoritos</h2>
         </div>
-        <div className="fav-cards-container">
-          {movies.length > 0 ? (
-            movies.map((movie) => (
-              <div key={movie.id} className="fav-card">
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  className="fav-card-img"
-                />
-                <p className="fav-card-title">
-                  {movie.title || "Título não disponível"}
-                </p>
-                <button
-                  className="fav-remove-btn"
-                  onClick={() => removeFavorite(movie.id)}
-                >
-                  <AiOutlineClose />
-                </button>
-              </div>
-            ))
-          ) : (
-            <p>Nenhum favorito encontrado.</p>
-          )}
-        </div>
       </div>
+      <MoviesContainer
+        movies={movies}
+        removeFromList={removeFavorite}
+        noMoviesMessage={"Nenhum favorito aqui."}
+      />
       <Footer />
     </div>
   );

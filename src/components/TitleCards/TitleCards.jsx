@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./TitleCards.css";
-import { FaStar, FaPlay } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { auth, addFavoriteMovie, removeFavoriteMovie } from "../../firebase";
 import { db, doc, getDoc } from "../../firebase";
-import { Link } from "react-router-dom";
+import ModalOverlay from "../ModalOverlay/ModalOverlay";
 
 const TitleCards = ({ title, category }) => {
   const [apiData, setApiData] = useState([]);
@@ -33,70 +33,6 @@ const TitleCards = ({ title, category }) => {
   const handleCardClick = (movie) => {
     setSelectedMovie(movie);
     setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-    setSelectedMovie(null);
-  };
-
-  const toggleFavorite = async (movie) => {
-    if (auth.currentUser) {
-      const userId = auth.currentUser.uid;
-      try {
-        if (favorites.has(movie.id)) {
-          await removeFavoriteMovie(movie.id);
-          setFavorites((prevFavorites) => {
-            const newFavorites = new Set(prevFavorites);
-            newFavorites.delete(movie.id);
-            return newFavorites;
-          });
-        } else {
-          await addFavoriteMovie(movie);
-          setFavorites((prevFavorites) => new Set(prevFavorites).add(movie.id));
-        }
-      } catch (error) {
-        console.error("Erro ao atualizar favoritos:", error);
-      }
-    } else {
-      console.error("Usuário não autenticado");
-    }
-  };
-
-  const addToWatched = async (movieData) => {
-    const userId = auth.currentUser ? auth.currentUser.uid : null;
-
-    if (!userId) {
-      console.error("Usuário não autenticado");
-      return;
-    }
-
-    const { id, title } = movieData;
-    const watchedAt = new Date().toISOString();
-
-    if (!id || !title) {
-      console.error("Dados do filme inválidos:", movieData);
-      return;
-    }
-
-    try {
-      const updatedMovieData = { ...movieData, watchedAt };
-      const response = await axios.post(
-        `http://localhost:5000/watched/${userId}`,
-        updatedMovieData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Resposta do backend:", response.data);
-    } catch (error) {
-      console.error(
-        "Erro ao adicionar filme aos assistidos:",
-        error.response ? error.response.data : error.message
-      );
-    }
   };
 
   useEffect(() => {
@@ -187,9 +123,9 @@ const TitleCards = ({ title, category }) => {
             >
               <img
                 src={`https://image.tmdb.org/t/p/w500${card.backdrop_path}`}
-                alt={card.original_title}
+                alt={card.title ?? card.original_title}
               />
-              <p>{card.original_title}</p>
+              <p>{card.title ?? card.original_title}</p>
             </div>
           ))
         ) : (
@@ -198,58 +134,13 @@ const TitleCards = ({ title, category }) => {
       </div>
 
       {modalVisible && selectedMovie && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-close">
-              <span class="material-icons" onClick={closeModal}>
-                close
-              </span>
-            </div>
-
-            <h2>{selectedMovie.original_title}</h2>
-            <img
-              src={`https://image.tmdb.org/t/p/w500${selectedMovie.backdrop_path}`}
-              alt={selectedMovie.original_title}
-            />
-            <div className="overview-container">
-              <p>{selectedMovie.overview}</p>
-            </div>
-            <div className="play-and-star-container">
-              {category !== "watched" && (
-                <Link
-                  to={`/player/${selectedMovie.id}`}
-                  onClick={() => {
-                    addToWatched(selectedMovie);
-                    closeModal();
-                  }}
-                >
-                  <button className="modal-button">
-                    <div className="modal-button-container">
-                      <span class="material-icons">play_arrow</span>
-                      Assistir
-                    </div>
-                  </button>
-                </Link>
-              )}
-              {category !== "watched" && (
-                <button
-                  className="favorite-button"
-                  onClick={() => toggleFavorite(selectedMovie)}
-                >
-                  Favoritar
-                  <FaStar
-                    className="star-icon"
-                    color={
-                      favorites.has(selectedMovie.id) ? "#EA85FF" : "#453455"
-                    }
-                    size={25}
-                  />
-                </button>
-              )}
-            </div>
-            {category === "watched" && <p>Você já assistiu a este filme.</p>}
-          </div>
-        </div>
+        <ModalOverlay
+          selectedMovie={selectedMovie}
+          category={category}
+          setModalVisible={setModalVisible}
+          modalVisible={modalVisible}
+          setSelectedMovie={setSelectedMovie}
+        />
       )}
     </div>
   );

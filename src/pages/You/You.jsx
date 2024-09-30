@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import "./You.css";
 import streamstar_spinner from "../../assets/streamstar_spinner.gif";
+import MoviesContainer from "../../components/MoviesContainer/MoviesContainer";
 
 const You = () => {
   const [recommendations, setRecommendations] = useState([]);
@@ -67,11 +68,6 @@ const You = () => {
     return (
       <div className="you-spinner">
         <img src={streamstar_spinner} alt="loading" />
-        <p>
-          <span class="dot">.</span>
-          <span class="dot">.</span>
-          <span class="dot">.</span>
-        </p>
       </div>
     );
   if (error) return <p className="you-error">Erro ao carregar: {error}</p>;
@@ -82,26 +78,7 @@ const You = () => {
       <div className="you-hero">
         <h2>Para Você</h2>
       </div>
-      <div className="you-grid-container">
-        {recommendations.length > 0 ? (
-          recommendations.map((movie) => (
-            <div className="you-grid-item-container">
-              <div key={movie.id} className="you-grid-item">
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  className="you-grid-item-img"
-                />
-              </div>
-              <p className="you-grid-item-title">
-                {movie.title || "Título não disponível"}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p>Nenhuma recomendação disponível.</p>
-        )}
-      </div>
+      <MoviesContainer movies={recommendations} />
       <Footer />
     </div>
   );

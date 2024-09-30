@@ -1,7 +1,3 @@
-/* html {
-  width: fit-content;
-} */
-
 .you-container {
   width: 100%;
   background-color: #000;
@@ -10,15 +6,18 @@
 }
 
 .you-hero {
-  padding: 70px 6% 40px;
-  text-align: center;
+  position: relative;
+  padding-top: 150px;
 }
 
 .you-hero h2 {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
   font-size: 2.5em;
   color: #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  margin-top: 20px;
   animation: fadeIn 1s ease-out;
 }
 
@@ -31,7 +30,7 @@
 }
 
 .you-spinner img {
-  width: 15rem;
+  width: 23rem;
 }
 
 .you-spinner p {

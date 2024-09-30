@@ -32,7 +32,9 @@ const Player = () => {
     )
       .then((response) => response.json())
       .then((response) => setApiData(response.results[0]))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+      });
   });
 
   console.log("apiData: ", apiData);
@@ -46,19 +48,52 @@ const Player = () => {
           navigate("/");
         }}
       />
-      <iframe
-        width="80%"
-        height="80%"
-        src={`https://www.youtube.com/embed/${apiData.key}`}
-        title="trailer"
-        frameBorder="0"
-        allowFullScreen
-      ></iframe>
-      <div className="player-info">
-        {/*         <p>{apiData.published_at.slice(0)}</p>
-        <p>{apiData.name}</p>
-        <p>{apiData.type}</p> */}
-      </div>
+      {apiData && (
+        <iframe
+          width="80%"
+          height="80%"
+          src={`https://www.youtube.com/embed/${apiData.key}`}
+          title="trailer"
+          frameBorder="0"
+          allowFullScreen
+        ></iframe>
+      )}
+      {!apiData && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            textAlign: "center",
+            gap: "10px",
+          }}
+        >
+          <h1 style={{ fontSize: "3rem" }}>Ops!</h1>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <span style={{ fontSize: "4rem" }} class="material-icons">
+              error
+            </span>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "start",
+                justifyContent: "center",
+                alignItems: "start",
+              }}
+            >
+              <p>Erro ao carregar dados do filme</p>
+              <p>Tente novamente</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

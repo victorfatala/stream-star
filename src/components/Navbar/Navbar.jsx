@@ -4,9 +4,11 @@ import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import SearchBar from "../SearchBar/SearchBar";
 
 const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
+  const [searchBarVisible, setSearchBarVisible] = useState(false);
   const [user, setUser] = useState(null);
   const navRef = useRef();
 
@@ -99,13 +101,23 @@ const Navbar = () => {
           <span class="material-icons">menu</span>
           <div className="menu-dropdown">{menuItems()}</div>
         </div>
-        {menuItems()}
+        {!searchBarVisible && (
+          <>
+            <div>{menuItems()}</div>
+          </>
+        )}
       </div>
+      {searchBarVisible && (
+        <div className="search-bar">
+          <SearchBar />
+        </div>
+      )}
       <div className="navbar-right">
-        <button>
-          <span className="material-icons">search</span>
-        </button>
-        <input className="search" type="text" placeholder="Pesquise algo..." />
+        <div className="search-bar-button">
+          <button onClick={() => setSearchBarVisible(!searchBarVisible)}>
+            <span className="material-icons">search</span>
+          </button>
+        </div>
         <p className="user">
           {user ? `${user.displayName || user.email}` : "Carregando..."}
         </p>
