@@ -28,8 +28,11 @@ Start React.js ✨:
 - npm i
 - npm run dev
 
+# Images 📸
 
-# Images 
+Home 🏠
 <img src="src\assets\print.png"/>
+Cards 📧
 <img src="src\assets\print2.png"/>
+Favorites ⭐
 <img src="src\assets\print3.png"/>
