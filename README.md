@@ -27,3 +27,9 @@ Start React.js ✨:
 - make sure you are on the project root folder
 - npm i
 - npm run dev
+
+
+# Images 
+![Image](src\assets\print.png)
+![Image](src\assets\print2.png)
+![Image](src\assets\print3.png)

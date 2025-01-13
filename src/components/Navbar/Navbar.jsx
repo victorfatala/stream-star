@@ -98,7 +98,7 @@ const Navbar = () => {
           <img src={logo} alt="Logo" />
         </Link>
         <div className="menu">
-          <span class="material-icons">menu</span>
+          <span className="material-icons">menu</span>
           <div className="menu-dropdown">{menuItems()}</div>
         </div>
         {!searchBarVisible && (
