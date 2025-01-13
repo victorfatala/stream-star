@@ -30,6 +30,6 @@ Start React.js ✨:
 
 
 # Images 
-![Image](src\assets\print.png)
-![Image](src\assets\print2.png)
-![Image](src\assets\print3.png)
+<img src="src\assets\print.png"/>
+<img src="src\assets\print2.png"/>
+<img src="src\assets\print3.png"/>
